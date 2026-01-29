@@ -2,26 +2,78 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  body {
+    @apply bg-dark text-light;
+  }
+
+  ::selection {
+    @apply bg-primary/30 text-light;
   }
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+  .btn-primary {
+    @apply bg-primary text-dark font-medium px-6 py-3 rounded
+           transition-all duration-300 ease-out
+           hover:bg-primary-light hover:shadow-xl hover:shadow-primary/30
+           hover:-translate-y-1 hover:scale-[1.02]
+           active:translate-y-0 active:scale-[0.98] active:shadow-md
+           focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 focus:ring-offset-dark;
+  }
+
+  .btn-outline {
+    @apply border-2 border-primary text-primary font-medium px-6 py-3 rounded
+           transition-all duration-300 ease-out
+           hover:bg-primary hover:text-dark hover:shadow-xl hover:shadow-primary/30
+           hover:-translate-y-1 hover:scale-[1.02]
+           active:translate-y-0 active:scale-[0.98] active:shadow-md
+           focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 focus:ring-offset-dark;
+  }
+
+  .section-padding {
+    @apply py-16 md:py-24 px-4 md:px-8;
+  }
+
+  .container-custom {
+    @apply max-w-7xl mx-auto px-4 md:px-8;
+  }
+
+  .heading-xl {
+    @apply text-4xl md:text-5xl lg:text-6xl font-bold;
+  }
+
+  .heading-lg {
+    @apply text-3xl md:text-4xl font-bold;
+  }
+
+  .heading-md {
+    @apply text-2xl md:text-3xl font-semibold;
+  }
+
+  .text-body {
+    @apply text-light-secondary text-lg leading-relaxed;
+  }
+
+  /* Form Input Styles */
+  .input-field {
+    @apply w-full bg-dark border border-dark-tertiary rounded-lg px-4 py-3 text-light
+           placeholder:text-light-tertiary transition-all duration-300 ease-out
+           focus:outline-none focus:border-primary focus:shadow-lg focus:shadow-primary/10
+           hover:border-dark-tertiary/80;
+  }
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+
+  .gradient-gold {
+    @apply bg-gradient-to-l from-primary via-primary-light to-primary;
   }
 }
