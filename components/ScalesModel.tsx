@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, useEffect } from 'react'
+import { useRef, useEffect, useState } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { useGLTF, Center, Environment } from '@react-three/drei'
 import * as THREE from 'three'
@@ -12,7 +12,7 @@ const goldMaterial = new THREE.MeshStandardMaterial({
   roughness: 0.2,
 })
 
-function Scales() {
+function Scales({ isMobile }: { isMobile: boolean }) {
   const { scene } = useGLTF('/models/scales.glb?v=4')
   const beamRef = useRef<THREE.Object3D | null>(null)
   const leftPanRef = useRef<THREE.Object3D | null>(null)
@@ -45,11 +45,19 @@ function Scales() {
   }, [scene])
 
   useFrame((state) => {
-    // Mouse X position: -1 (left) to 1 (right)
-    const mouseX = state.pointer.x
-    const targetRotation = mouseX * 0.2094 // 12 degrees max
+    let targetRotation: number
 
-    // Rotate beam based on mouse position
+    if (isMobile) {
+      // On mobile: gentle automatic animation using sine wave
+      const time = state.clock.getElapsedTime()
+      targetRotation = Math.sin(time * 0.5) * 0.1 // Gentle swing
+    } else {
+      // On desktop: mouse-based animation
+      const mouseX = state.pointer.x
+      targetRotation = mouseX * 0.2094 // 12 degrees max
+    }
+
+    // Rotate beam
     if (beamRef.current) {
       beamRef.current.rotation.x = THREE.MathUtils.lerp(
         beamRef.current.rotation.x,
@@ -84,6 +92,15 @@ function Scales() {
 }
 
 export default function ScalesModel() {
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768)
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
+
   return (
     <div className="w-full h-full">
       <Canvas
@@ -93,7 +110,7 @@ export default function ScalesModel() {
         <ambientLight intensity={0.6} />
         <directionalLight position={[10, 10, 5]} intensity={1} />
         <directionalLight position={[-10, -10, -5]} intensity={0.3} />
-        <Scales />
+        <Scales isMobile={isMobile} />
         {/* @ts-expect-error - environmentRotation exists in drei but types are outdated */}
         <Environment preset="studio" environmentRotation={[0, 0.5236, 0]} />
       </Canvas>

@@ -8,7 +8,7 @@ export default function ServicesPage() {
   return (
     <>
       {/* Hero Section */}
-      <section className="pt-32 pb-16 bg-dark">
+      <section className="pt-24 md:pt-32 pb-12 md:pb-16 bg-dark">
         <div className="container-custom text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

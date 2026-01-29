@@ -31,7 +31,7 @@ export default function AboutPage() {
   return (
     <>
       {/* Hero Section */}
-      <section className="pt-32 pb-16 bg-dark">
+      <section className="pt-24 md:pt-32 pb-12 md:pb-16 bg-dark">
         <div className="container-custom text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -124,7 +124,9 @@ export default function AboutPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="bg-dark-secondary border border-dark-tertiary rounded-lg p-6 text-center hover:border-primary/50 transition-colors duration-300"
+                className="bg-dark-secondary border border-dark-tertiary rounded-lg p-6 text-center
+                           hover:border-primary/50 hover:shadow-xl hover:shadow-primary/10
+                           hover:-translate-y-2 transition-all duration-300 ease-out"
               >
                 <div className="w-14 h-14 rounded-lg bg-dark flex items-center justify-center mx-auto mb-4">
                   <value.icon className="w-7 h-7 text-primary" />
