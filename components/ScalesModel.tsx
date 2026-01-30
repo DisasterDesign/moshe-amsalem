@@ -80,14 +80,14 @@ function GoldParticles() {
       particleData.positions[i * 3 + 1] = mouseY + (Math.random() - 0.5) * 0.3
       particleData.positions[i * 3 + 2] = (Math.random() - 0.5) * 2
 
-      // Random velocity (slight upward drift)
-      particleData.velocities[i * 3] = (Math.random() - 0.5) * 2
-      particleData.velocities[i * 3 + 1] = Math.random() * 1.5 + 0.5
-      particleData.velocities[i * 3 + 2] = (Math.random() - 0.5) * 2
+      // Random velocity (small initial burst, then gravity takes over)
+      particleData.velocities[i * 3] = (Math.random() - 0.5) * 1.5
+      particleData.velocities[i * 3 + 1] = Math.random() * 0.8 + 0.2
+      particleData.velocities[i * 3 + 2] = (Math.random() - 0.5) * 1.5
 
-      // Reset lifetime and size
+      // Reset lifetime and size (smaller particles)
       particleData.lifetimes[i] = PARTICLE_LIFETIME
-      particleData.sizes[i] = Math.random() * 0.15 + 0.05
+      particleData.sizes[i] = Math.random() * 0.06 + 0.02
 
       nextParticleIndex.current = (nextParticleIndex.current + 1) % PARTICLE_COUNT
     }
@@ -103,11 +103,11 @@ function GoldParticles() {
         particleData.positions[i * 3 + 1] += particleData.velocities[i * 3 + 1] * delta
         particleData.positions[i * 3 + 2] += particleData.velocities[i * 3 + 2] * delta
 
-        // Add some gravity and drag
-        particleData.velocities[i * 3 + 1] -= delta * 0.5 // gravity
-        particleData.velocities[i * 3] *= 0.98 // drag
-        particleData.velocities[i * 3 + 1] *= 0.98
-        particleData.velocities[i * 3 + 2] *= 0.98
+        // Strong gravity - particles fall to floor
+        particleData.velocities[i * 3 + 1] -= delta * 4 // strong gravity
+        particleData.velocities[i * 3] *= 0.99 // light drag
+        particleData.velocities[i * 3 + 1] *= 0.99
+        particleData.velocities[i * 3 + 2] *= 0.99
 
         // Fade out size based on lifetime
         const lifeRatio = particleData.lifetimes[i] / PARTICLE_LIFETIME
@@ -176,11 +176,11 @@ function GoldParticles() {
         />
       </bufferGeometry>
       <pointsMaterial
-        size={0.4}
+        size={0.25}
         map={particleTexture}
         vertexColors
         transparent
-        opacity={0.9}
+        opacity={0.85}
         sizeAttenuation
         blending={THREE.AdditiveBlending}
         depthWrite={false}
