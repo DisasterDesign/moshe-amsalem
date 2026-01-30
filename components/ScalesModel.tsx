@@ -129,6 +129,30 @@ function GoldParticles() {
     sizeAttr.needsUpdate = true
   })
 
+  // Create soft circular texture for blurry particles
+  const particleTexture = useMemo(() => {
+    const canvas = document.createElement('canvas')
+    canvas.width = 64
+    canvas.height = 64
+    const ctx = canvas.getContext('2d')!
+
+    // Create radial gradient for soft, blurry circle
+    const gradient = ctx.createRadialGradient(32, 32, 0, 32, 32, 32)
+    gradient.addColorStop(0, 'rgba(255, 255, 255, 1)')
+    gradient.addColorStop(0.2, 'rgba(255, 255, 255, 0.8)')
+    gradient.addColorStop(0.4, 'rgba(255, 255, 255, 0.4)')
+    gradient.addColorStop(0.6, 'rgba(255, 255, 255, 0.15)')
+    gradient.addColorStop(0.8, 'rgba(255, 255, 255, 0.05)')
+    gradient.addColorStop(1, 'rgba(255, 255, 255, 0)')
+
+    ctx.fillStyle = gradient
+    ctx.fillRect(0, 0, 64, 64)
+
+    const texture = new THREE.CanvasTexture(canvas)
+    texture.needsUpdate = true
+    return texture
+  }, [])
+
   return (
     <points ref={pointsRef}>
       <bufferGeometry>
@@ -152,10 +176,11 @@ function GoldParticles() {
         />
       </bufferGeometry>
       <pointsMaterial
-        size={0.15}
+        size={0.4}
+        map={particleTexture}
         vertexColors
         transparent
-        opacity={0.8}
+        opacity={0.9}
         sizeAttenuation
         blending={THREE.AdditiveBlending}
         depthWrite={false}
