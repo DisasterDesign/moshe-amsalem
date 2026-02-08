@@ -34,36 +34,29 @@ function GoldWall({ isMobile }: { isMobile: boolean }) {
   const cubeData = useMemo(() => {
     const cols = isMobile ? 22 : 30
     const rows = isMobile ? 16 : 20
-    const spacing = 1.05
-    const cubeSize = 0.95
+    const cubeSize = 0.9
+    const gap = 0.12
+    const spacing = cubeSize + gap
     const data = []
 
     for (let row = 0; row < rows; row++) {
-      const rowOffset = row % 2 === 0 ? 0 : spacing * 0.5
-
       for (let col = 0; col < cols; col++) {
-        const x = (col - (cols - 1) / 2) * spacing + rowOffset
+        const x = (col - (cols - 1) / 2) * spacing
         const y = (row - (rows - 1) / 2) * spacing
-        const z = (Math.random() - 0.5) * 0.3
 
-        const scale = cubeSize * (0.92 + Math.random() * 0.16)
-        const rotX = (Math.random() - 0.5) * 0.06
-        const rotY = (Math.random() - 0.5) * 0.06
-        const rotZ = (Math.random() - 0.5) * 0.06
-
-        data.push({ x, y, z, scale, rotX, rotY, rotZ })
+        data.push({ x, y, scale: cubeSize })
       }
     }
     return data
   }, [isMobile])
 
-  // Set initial transforms
+  // Set initial transforms - clean uniform grid
   useEffect(() => {
     if (!meshRef.current) return
     for (let i = 0; i < cubeData.length; i++) {
       const cube = cubeData[i]
-      dummy.position.set(cube.x, cube.y, cube.z)
-      dummy.rotation.set(cube.rotX, cube.rotY, cube.rotZ)
+      dummy.position.set(cube.x, cube.y, 0)
+      dummy.rotation.set(0, 0, 0)
       dummy.scale.setScalar(cube.scale)
       dummy.updateMatrix()
       meshRef.current.setMatrixAt(i, dummy.matrix)
@@ -232,11 +225,9 @@ function Scales({ isMobile }: { isMobile: boolean }) {
   })
 
   return (
-    <group position={[0, -3, 0]}>
-      <Center>
-        <primitive object={scene} scale={1} />
-      </Center>
-    </group>
+    <Center>
+      <primitive object={scene} scale={1} />
+    </Center>
   )
 }
 
