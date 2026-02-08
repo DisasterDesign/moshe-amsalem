@@ -36,16 +36,16 @@ export default function Hero() {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
-          {/* Title - dark text on gold background */}
-          <h1 className="text-4xl sm:text-5xl md:text-8xl lg:text-9xl font-bold mb-4 text-dark drop-shadow-[0_2px_4px_rgba(201,169,98,0.3)]">
-            <span className="text-dark-secondary">עו״ד</span> משה אמסלם
+          {/* Title - dynamic negative color against background */}
+          <h1 className="text-4xl sm:text-5xl md:text-8xl lg:text-9xl font-bold mb-4 text-white mix-blend-difference">
+            עו״ד משה אמסלם
           </h1>
 
           {/* Subtitles */}
-          <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl text-dark-secondary mb-2">
+          <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl text-white mix-blend-difference mb-2">
             משרד עורכי דין
           </p>
-          <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-dark-tertiary">
+          <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-white mix-blend-difference">
             מקרקעין והתחדשות עירונית
           </p>
         </motion.div>

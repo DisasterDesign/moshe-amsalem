@@ -32,10 +32,10 @@ function GoldWall({ isMobile }: { isMobile: boolean }) {
   )
 
   const cubeData = useMemo(() => {
-    const cols = isMobile ? 22 : 30
-    const rows = isMobile ? 16 : 20
-    const cubeSize = 0.9
-    const gap = 0.12
+    const cols = isMobile ? 12 : 16
+    const rows = isMobile ? 9 : 11
+    const cubeSize = 1.8
+    const gap = 0.15
     const spacing = cubeSize + gap
     const data = []
 
@@ -44,13 +44,24 @@ function GoldWall({ isMobile }: { isMobile: boolean }) {
         const x = (col - (cols - 1) / 2) * spacing
         const y = (row - (rows - 1) / 2) * spacing
 
-        data.push({ x, y, scale: cubeSize })
+        data.push({ x, y, scale: cubeSize, currentRotX: 0 })
       }
     }
     return data
   }, [isMobile])
 
-  // Set initial transforms - clean uniform grid
+  // Wall dimensions for mouse mapping
+  const wallDims = useMemo(() => {
+    const cols = isMobile ? 12 : 16
+    const rows = isMobile ? 9 : 11
+    const spacing = 1.8 + 0.15
+    return {
+      halfW: ((cols - 1) / 2) * spacing,
+      halfH: ((rows - 1) / 2) * spacing,
+    }
+  }, [isMobile])
+
+  // Set initial transforms
   useEffect(() => {
     if (!meshRef.current) return
     for (let i = 0; i < cubeData.length; i++) {
@@ -64,9 +75,10 @@ function GoldWall({ isMobile }: { isMobile: boolean }) {
     meshRef.current.instanceMatrix.needsUpdate = true
   }, [cubeData, dummy])
 
-  // Parallax only - no per-frame color updates
   useFrame(() => {
-    if (!groupRef.current) return
+    if (!groupRef.current || !meshRef.current) return
+
+    // Parallax - rotate entire wall group
     groupRef.current.rotation.y = THREE.MathUtils.lerp(
       groupRef.current.rotation.y,
       mouseCurrent.x * 0.08,
@@ -77,6 +89,40 @@ function GoldWall({ isMobile }: { isMobile: boolean }) {
       -mouseCurrent.y * 0.05,
       0.05
     )
+
+    // Mouse world position on wall plane
+    const mouseWorldX = mouseCurrent.x * wallDims.halfW
+    const mouseWorldY = -mouseCurrent.y * wallDims.halfH
+    const hoverRadius = 3.5
+
+    // Update cube rotations based on mouse proximity
+    for (let i = 0; i < cubeData.length; i++) {
+      const cube = cubeData[i]
+      const dx = cube.x - mouseWorldX
+      const dy = cube.y - mouseWorldY
+      const dist = Math.sqrt(dx * dx + dy * dy)
+
+      // Target: 20 degrees (0.349 rad) when mouse is on cube, fade with distance
+      let targetRotX = 0
+      if (dist < hoverRadius) {
+        const proximity = 1 - dist / hoverRadius
+        targetRotX = proximity * 0.349 // 20 degrees max
+      }
+
+      // Smooth lerp
+      cube.currentRotX = THREE.MathUtils.lerp(cube.currentRotX, targetRotX, 0.08)
+
+      // Only update matrix if cube is rotating or was recently
+      if (Math.abs(cube.currentRotX) > 0.001) {
+        dummy.position.set(cube.x, cube.y, 0)
+        dummy.rotation.set(cube.currentRotX, 0, 0)
+        dummy.scale.setScalar(cube.scale)
+        dummy.updateMatrix()
+        meshRef.current.setMatrixAt(i, dummy.matrix)
+      }
+    }
+
+    meshRef.current.instanceMatrix.needsUpdate = true
   })
 
   return (
