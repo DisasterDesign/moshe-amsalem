@@ -3,19 +3,10 @@
 import { useRef, useEffect, useState, useMemo } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { useGLTF, Center, Environment } from '@react-three/drei'
+import { RoundedBoxGeometry } from 'three-stdlib'
 import * as THREE from 'three'
 
-// Gold color palette for wall bricks
-const WALL_COLORS = [
-  new THREE.Color('#8B6914'),
-  new THREE.Color('#9E7A1A'),
-  new THREE.Color('#B08D20'),
-  new THREE.Color('#C5A028'),
-  new THREE.Color('#C9A962'),
-  new THREE.Color('#D4AF37'),
-]
-
-// Gold material for the scales model
+// Uniform gold material for the scales model and cubes
 const goldMaterial = new THREE.MeshStandardMaterial({
   color: new THREE.Color('#C9A962'),
   metalness: 0.9,
@@ -26,9 +17,6 @@ const goldMaterial = new THREE.MeshStandardMaterial({
 const mouseTarget = { x: 0, y: 0 }
 const mouseCurrent = { x: 0, y: 0 }
 
-// Reusable temp color to avoid allocations in render loop
-const tempColor = new THREE.Color()
-
 // ============================================
 // Gold Wall - Grid of brick-like cubes
 // ============================================
@@ -36,6 +24,12 @@ function GoldWall({ isMobile }: { isMobile: boolean }) {
   const groupRef = useRef<THREE.Group>(null)
   const meshRef = useRef<THREE.InstancedMesh>(null)
   const dummy = useMemo(() => new THREE.Object3D(), [])
+
+  // Rounded box geometry - shared across all instances
+  const roundedGeometry = useMemo(
+    () => new RoundedBoxGeometry(1, 1, 1, 4, 0.08),
+    []
+  )
 
   const cubeData = useMemo(() => {
     const cols = isMobile ? 22 : 30
@@ -45,35 +39,25 @@ function GoldWall({ isMobile }: { isMobile: boolean }) {
     const data = []
 
     for (let row = 0; row < rows; row++) {
-      // Brick offset - every other row shifts by half
       const rowOffset = row % 2 === 0 ? 0 : spacing * 0.5
 
       for (let col = 0; col < cols; col++) {
         const x = (col - (cols - 1) / 2) * spacing + rowOffset
         const y = (row - (rows - 1) / 2) * spacing
-        const z = (Math.random() - 0.5) * 0.3 // slight depth variation
+        const z = (Math.random() - 0.5) * 0.3
 
-        const scale = cubeSize * (0.92 + Math.random() * 0.16) // ±8%
-        const rotX = (Math.random() - 0.5) * 0.06 // ±~3 degrees
+        const scale = cubeSize * (0.92 + Math.random() * 0.16)
+        const rotX = (Math.random() - 0.5) * 0.06
         const rotY = (Math.random() - 0.5) * 0.06
         const rotZ = (Math.random() - 0.5) * 0.06
 
-        const baseColor = WALL_COLORS[Math.floor(Math.random() * WALL_COLORS.length)].clone()
-        baseColor.r += (Math.random() - 0.5) * 0.03
-        baseColor.g += (Math.random() - 0.5) * 0.03
-        baseColor.b += (Math.random() - 0.5) * 0.02
-
-        data.push({
-          x, y, z, scale, rotX, rotY, rotZ,
-          baseColor,
-          shimmerPhase: Math.random() * Math.PI * 2,
-        })
+        data.push({ x, y, z, scale, rotX, rotY, rotZ })
       }
     }
     return data
   }, [isMobile])
 
-  // Set initial transforms and colors
+  // Set initial transforms
   useEffect(() => {
     if (!meshRef.current) return
     for (let i = 0; i < cubeData.length; i++) {
@@ -83,69 +67,36 @@ function GoldWall({ isMobile }: { isMobile: boolean }) {
       dummy.scale.setScalar(cube.scale)
       dummy.updateMatrix()
       meshRef.current.setMatrixAt(i, dummy.matrix)
-      meshRef.current.setColorAt(i, cube.baseColor)
     }
     meshRef.current.instanceMatrix.needsUpdate = true
-    if (meshRef.current.instanceColor) {
-      meshRef.current.instanceColor.needsUpdate = true
-    }
   }, [cubeData, dummy])
 
-  useFrame((state) => {
-    if (!meshRef.current) return
-
-    // Parallax - rotate the whole wall group
-    if (groupRef.current) {
-      groupRef.current.rotation.y = THREE.MathUtils.lerp(
-        groupRef.current.rotation.y,
-        mouseCurrent.x * 0.08,
-        0.05
-      )
-      groupRef.current.rotation.x = THREE.MathUtils.lerp(
-        groupRef.current.rotation.x,
-        -mouseCurrent.y * 0.05,
-        0.05
-      )
-    }
-
-    // Shimmer wave across the wall
-    const time = state.clock.getElapsedTime()
-    let colorChanged = false
-
-    for (let i = 0; i < cubeData.length; i++) {
-      const cube = cubeData[i]
-      const shimmerWave = Math.sin(time * 0.8 + cube.x * 0.4 + cube.y * 0.2 + cube.shimmerPhase)
-
-      if (shimmerWave > 0.6) {
-        const brightness = (shimmerWave - 0.6) / 0.4
-        tempColor.copy(cube.baseColor)
-        tempColor.r = Math.min(1, tempColor.r + brightness * 0.25)
-        tempColor.g = Math.min(1, tempColor.g + brightness * 0.2)
-        tempColor.b = Math.min(1, tempColor.b + brightness * 0.15)
-        meshRef.current.setColorAt(i, tempColor)
-        colorChanged = true
-      } else {
-        meshRef.current.setColorAt(i, cube.baseColor)
-        colorChanged = true
-      }
-    }
-
-    if (colorChanged && meshRef.current.instanceColor) {
-      meshRef.current.instanceColor.needsUpdate = true
-    }
+  // Parallax only - no per-frame color updates
+  useFrame(() => {
+    if (!groupRef.current) return
+    groupRef.current.rotation.y = THREE.MathUtils.lerp(
+      groupRef.current.rotation.y,
+      mouseCurrent.x * 0.08,
+      0.05
+    )
+    groupRef.current.rotation.x = THREE.MathUtils.lerp(
+      groupRef.current.rotation.x,
+      -mouseCurrent.y * 0.05,
+      0.05
+    )
   })
 
   return (
     <group ref={groupRef} position={[0, 0, -5]}>
       <instancedMesh
         ref={meshRef}
-        args={[undefined, undefined, cubeData.length]}
+        args={[roundedGeometry, undefined, cubeData.length]}
         frustumCulled={false}
       >
-        <boxGeometry args={[1, 1, 1]} />
         <meshStandardMaterial
-          metalness={0.88}
-          roughness={0.22}
+          color="#C9A962"
+          metalness={0.9}
+          roughness={0.2}
           envMapIntensity={1.0}
         />
       </instancedMesh>
