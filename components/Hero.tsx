@@ -20,12 +20,12 @@ export default function Hero() {
         <ScalesModel />
       </div>
 
-      {/* Overlay - subtle vignette, gold wall stays visible */}
+      {/* Subtle vignette overlay */}
       <div
         className="absolute inset-0 z-[1] pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse at center, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.25) 60%, rgba(0,0,0,0.45) 100%)",
+            "radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.3) 100%)",
         }}
       />
 
