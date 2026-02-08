@@ -20,12 +20,12 @@ export default function Hero() {
         <ScalesModel />
       </div>
 
-      {/* Overlay - subtle darkening at center for text readability */}
+      {/* Overlay - darkening for text readability over dense wall */}
       <div
         className="absolute inset-0 z-[1] pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse at center, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.15) 50%, transparent 70%)",
+            "radial-gradient(ellipse at center, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.35) 50%, rgba(0,0,0,0.15) 80%)",
         }}
       />
 
