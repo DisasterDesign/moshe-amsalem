@@ -42,10 +42,10 @@ export default function Hero() {
           </h1>
 
           {/* Subtitles */}
-          <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl text-white mix-blend-difference mb-2">
+          <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl text-light-secondary mb-2">
             משרד עורכי דין
           </p>
-          <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-white mix-blend-difference">
+          <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-primary">
             מקרקעין והתחדשות עירונית
           </p>
         </motion.div>
