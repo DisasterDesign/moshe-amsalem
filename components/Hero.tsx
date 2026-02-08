@@ -20,12 +20,12 @@ export default function Hero() {
         <ScalesModel />
       </div>
 
-      {/* Overlay - darkening for text readability over dense wall */}
+      {/* Overlay - subtle vignette, gold wall stays visible */}
       <div
         className="absolute inset-0 z-[1] pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse at center, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.35) 50%, rgba(0,0,0,0.15) 80%)",
+            "radial-gradient(ellipse at center, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.25) 60%, rgba(0,0,0,0.45) 100%)",
         }}
       />
 
@@ -36,16 +36,16 @@ export default function Hero() {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
-          {/* Title */}
-          <h1 className="text-4xl sm:text-5xl md:text-8xl lg:text-9xl font-bold mb-4">
-            <span className="text-primary">עו״ד</span> משה אמסלם
+          {/* Title - dark text on gold background */}
+          <h1 className="text-4xl sm:text-5xl md:text-8xl lg:text-9xl font-bold mb-4 text-dark drop-shadow-[0_2px_4px_rgba(201,169,98,0.3)]">
+            <span className="text-dark-secondary">עו״ד</span> משה אמסלם
           </h1>
 
           {/* Subtitles */}
-          <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl text-light-secondary mb-2">
+          <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl text-dark-secondary mb-2">
             משרד עורכי דין
           </p>
-          <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-primary">
+          <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-dark-tertiary">
             מקרקעין והתחדשות עירונית
           </p>
         </motion.div>
