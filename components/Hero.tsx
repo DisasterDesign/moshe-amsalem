@@ -37,15 +37,15 @@ export default function Hero() {
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
           {/* Title */}
-          <h1 className="text-4xl sm:text-5xl md:text-8xl lg:text-9xl font-bold mb-4 drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]" style={{ color: '#1a3a5c' }}>
-            <span style={{ color: '#0d2b4a' }}>עו״ד</span> משה אמסלם
+          <h1 className="text-4xl sm:text-5xl md:text-8xl lg:text-9xl font-bold mb-4 text-white" style={{ textShadow: '0 2px 10px rgba(0,0,0,0.8), 0 4px 25px rgba(0,0,0,0.6), 0 0 40px rgba(0,0,0,0.4)' }}>
+            <span className="text-primary">עו״ד</span> משה אמסלם
           </h1>
 
           {/* Subtitles */}
-          <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl mb-2 drop-shadow-[0_1px_4px_rgba(0,0,0,0.4)]" style={{ color: '#2a5580' }}>
+          <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl text-light-secondary mb-2" style={{ textShadow: '0 2px 8px rgba(0,0,0,0.8), 0 4px 20px rgba(0,0,0,0.5)' }}>
             משרד עורכי דין
           </p>
-          <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl drop-shadow-[0_1px_4px_rgba(0,0,0,0.4)]" style={{ color: '#3a6a9e' }}>
+          <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-primary" style={{ textShadow: '0 2px 8px rgba(0,0,0,0.8), 0 4px 20px rgba(0,0,0,0.5)' }}>
             מקרקעין והתחדשות עירונית
           </p>
         </motion.div>
