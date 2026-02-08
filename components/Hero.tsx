@@ -20,12 +20,12 @@ export default function Hero() {
         <ScalesModel />
       </div>
 
-      {/* Overlay - separation between 3D and content */}
+      {/* Overlay - subtle darkening at center for text readability */}
       <div
         className="absolute inset-0 z-[1] pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse at center, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.7) 70%, rgba(0,0,0,0.85) 100%)",
+            "radial-gradient(ellipse at center, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.15) 50%, transparent 70%)",
         }}
       />
 
