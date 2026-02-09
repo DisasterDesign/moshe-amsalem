@@ -9,24 +9,14 @@ const ScalesModel = dynamic(() => import("./ScalesModel"), {
   loading: () => null,
 });
 
-const GoldRipple = dynamic(() => import("./GoldRipple"), {
-  ssr: false,
-  loading: () => null,
-});
-
 export default function Hero() {
   return (
     <section className="relative min-h-screen overflow-hidden">
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-b from-dark via-dark-secondary to-dark" />
 
-      {/* Gold ripple effect - behind everything */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        <GoldRipple />
-      </div>
-
-      {/* 3D Background - above ripple, behind content */}
-      <div className="absolute inset-0 z-[2] pointer-events-none md:pointer-events-auto">
+      {/* 3D Background */}
+      <div className="absolute inset-0 z-0 pointer-events-none md:pointer-events-auto opacity-80">
         <ScalesModel />
       </div>
 
