@@ -3,7 +3,7 @@
 import { useRef, useEffect, useCallback } from "react";
 
 const SCALE = 3;
-const DAMPING = 0.99;
+const DAMPING = 0.992;
 const GOLD_R = 201;
 const GOLD_G = 168;
 const GOLD_B = 76;
