@@ -2,8 +2,8 @@
 
 import { useRef, useEffect, useCallback } from "react";
 
-const SCALE = 4;
-const DAMPING = 0.97;
+const SCALE = 3;
+const DAMPING = 0.99;
 const GOLD_R = 201;
 const GOLD_G = 168;
 const GOLD_B = 76;
@@ -20,7 +20,7 @@ export default function GoldRipple() {
     const buf = buf1Ref.current;
     const { w, h } = dimsRef.current;
     if (!buf) return;
-    const radius = 4;
+    const radius = 8;
     for (let dy = -radius; dy <= radius; dy++) {
       for (let dx = -radius; dx <= radius; dx++) {
         const px = gx + dx;

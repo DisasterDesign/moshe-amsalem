@@ -96,8 +96,8 @@ export default function ScalesModel() {
       <Canvas
         camera={{ position: [0, 0, 15], fov: 45 }}
         style={{ background: 'transparent' }}
-        gl={{ powerPreference: 'high-performance', antialias: false }}
-        dpr={[1, isMobile ? 1 : 1.5]}
+        gl={{ powerPreference: 'high-performance', antialias: true }}
+        dpr={[1, 2]}
       >
         <ambientLight intensity={0.4} />
         <directionalLight
