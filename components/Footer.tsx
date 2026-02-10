@@ -35,6 +35,18 @@ export default function Footer() {
             </a>
           </div>
         </div>
+
+        {/* Credit */}
+        <div className="mt-4 text-center">
+          <a
+            href="https://www.fuzionwebz.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs text-light-tertiary opacity-40 hover:opacity-80 transition-opacity duration-300"
+          >
+            Built by Fuzion
+          </a>
+        </div>
       </div>
     </footer>
   );
