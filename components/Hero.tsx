@@ -30,7 +30,7 @@ export default function Hero() {
       />
 
       {/* Content - centered flex column */}
-      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen text-center px-4 pointer-events-none">
+      <div className="relative z-10 flex flex-col items-center pt-[30px] md:pt-0 md:justify-center min-h-screen text-center px-4 pointer-events-none">
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
