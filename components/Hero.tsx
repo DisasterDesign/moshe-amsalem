@@ -55,7 +55,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4, duration: 0.6 }}
-          className="flex flex-col sm:flex-row items-center gap-4 mt-10 pointer-events-auto"
+          className="flex flex-col sm:flex-row items-center gap-4 mt-[60px] md:mt-10 pointer-events-auto"
         >
           <Link
             href="/contact"
