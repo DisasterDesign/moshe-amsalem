@@ -94,7 +94,7 @@ export default function ScalesModel() {
   return (
     <div className="w-full h-full">
       <Canvas
-        camera={{ position: [0, 0, 15], fov: 45 }}
+        camera={{ position: [0, 0, isMobile ? 22 : 15], fov: 45 }}
         style={{ background: 'transparent' }}
         gl={{ powerPreference: 'high-performance', antialias: true }}
         dpr={[1, 2]}
