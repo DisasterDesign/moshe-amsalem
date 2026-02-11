@@ -63,18 +63,18 @@ export default function Sidebar() {
       <div className="p-6 border-t border-dark-tertiary">
         <div className="space-y-3 mb-6">
           <a
-            href="tel:03-XXX-XXXX"
+            href="tel:052-4337633"
             className="flex items-center gap-3 text-light-tertiary hover:text-primary hover:translate-x-1 transition-all duration-300 text-sm"
           >
             <Phone size={16} className="hover:scale-110" />
-            <span>03-XXX-XXXX</span>
+            <span>052-4337633</span>
           </a>
           <a
-            href="mailto:office@ma-law.co.il"
+            href="mailto:moshe@ams-law.com"
             className="flex items-center gap-3 text-light-tertiary hover:text-primary hover:translate-x-1 transition-all duration-300 text-sm"
           >
             <Mail size={16} />
-            <span>office@ma-law.co.il</span>
+            <span>moshe@ams-law.com</span>
           </a>
         </div>
 

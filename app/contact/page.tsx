@@ -8,20 +8,20 @@ const contactInfo = [
   {
     icon: Phone,
     title: "טלפון",
-    value: "03-XXX-XXXX",
-    link: "tel:03-XXX-XXXX",
+    value: "052-4337633",
+    link: "tel:052-4337633",
   },
   {
     icon: Mail,
     title: "דוא״ל",
-    value: "office@ma-law.co.il",
-    link: "mailto:office@ma-law.co.il",
+    value: "moshe@ams-law.com",
+    link: "mailto:moshe@ams-law.com",
   },
   {
     icon: MapPin,
     title: "כתובת",
-    value: "כתובת המשרד תיקבע בהמשך",
-    link: null,
+    value: "דרך מנחם בגין 144, תל אביב, מגדל מידטאון, קומה 36",
+    link: "https://maps.google.com/?q=דרך+מנחם+בגין+144+תל+אביב+מגדל+מידטאון",
   },
   {
     icon: Clock,
