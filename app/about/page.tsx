@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Scale, Award, Users, Target } from "lucide-react";
+import { Scale, Award, Users, Target, MapPin, Navigation } from "lucide-react";
 import CTASection from "@/components/CTASection";
 
 const values = [
@@ -137,6 +137,79 @@ export default function AboutPage() {
                 <p className="text-light-tertiary text-sm">{value.description}</p>
               </motion.div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Office Location */}
+      <section className="section-padding bg-dark-secondary">
+        <div className="container-custom">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="text-center mb-12"
+          >
+            <h2 className="heading-lg mb-4">
+              מיקום <span className="text-primary">המשרד</span>
+            </h2>
+          </motion.div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+            {/* Map */}
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+              className="rounded-xl overflow-hidden border border-dark-tertiary aspect-video"
+            >
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3381.2!2d34.7901!3d32.0694!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x151d4b9b0c5f5b1b%3A0x0!2sMidtown%20Tower%2C%20Derech%20Menachem%20Begin%20144%2C%20Tel%20Aviv!5e0!3m2!1siw!2sil!4v1700000000000"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="מיקום המשרד"
+              />
+            </motion.div>
+
+            {/* Address + Waze */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+              className="text-center lg:text-right"
+            >
+              <div className="flex items-start gap-4 justify-center lg:justify-start mb-6">
+                <div className="w-12 h-12 rounded-lg bg-dark flex items-center justify-center flex-shrink-0">
+                  <MapPin className="w-6 h-6 text-primary" />
+                </div>
+                <div>
+                  <h3 className="text-light font-semibold text-xl mb-2">כתובת המשרד</h3>
+                  <p className="text-light-secondary text-lg">
+                    דרך מנחם בגין 144, תל אביב
+                  </p>
+                  <p className="text-light-secondary text-lg">
+                    מגדל מידטאון, קומה 36
+                  </p>
+                </div>
+              </div>
+
+              <a
+                href="https://waze.com/ul?q=דרך%20מנחם%20בגין%20144%20תל%20אביב%20מגדל%20מידטאון&navigate=yes"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-3 bg-[#33CCFF] hover:bg-[#28b8e8] text-dark font-bold px-8 py-4 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg text-lg"
+              >
+                <Navigation className="w-6 h-6" />
+                נווט עם Waze
+              </a>
+            </motion.div>
           </div>
         </div>
       </section>
