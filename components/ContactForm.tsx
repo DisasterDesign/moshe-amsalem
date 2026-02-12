@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Send, CheckCircle } from "lucide-react";
+import { Send, CheckCircle, Loader2, AlertCircle } from "lucide-react";
 
 const subjects = [
   "עסקת מקרקעין",
@@ -16,6 +16,8 @@ const subjects = [
 
 export default function ContactForm() {
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -24,14 +26,33 @@ export default function ContactForm() {
     message: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Visual-only form - no backend
-    setIsSubmitted(true);
-    setTimeout(() => {
-      setIsSubmitted(false);
-      setFormData({ name: "", phone: "", email: "", subject: "", message: "" });
-    }, 3000);
+    setIsLoading(true);
+    setError("");
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || "שגיאה בשליחת הטופס");
+      }
+
+      setIsSubmitted(true);
+      setTimeout(() => {
+        setIsSubmitted(false);
+        setFormData({ name: "", phone: "", email: "", subject: "", message: "" });
+      }, 4000);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "שגיאה בשליחת הטופס, נסה שוב");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleChange = (
@@ -153,10 +174,31 @@ export default function ContactForm() {
         />
       </div>
 
+      {/* Error */}
+      {error && (
+        <div className="mt-4 p-4 bg-red-900/20 border border-red-500/30 rounded-lg flex items-center gap-3">
+          <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0" />
+          <p className="text-red-400 text-sm">{error}</p>
+        </div>
+      )}
+
       {/* Submit */}
-      <button type="submit" className="btn-primary w-full mt-6 flex items-center justify-center gap-2">
-        <span>שליחה</span>
-        <Send size={18} />
+      <button
+        type="submit"
+        disabled={isLoading}
+        className="btn-primary w-full mt-6 flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
+      >
+        {isLoading ? (
+          <>
+            <Loader2 size={18} className="animate-spin" />
+            <span>שולח...</span>
+          </>
+        ) : (
+          <>
+            <span>שליחה</span>
+            <Send size={18} />
+          </>
+        )}
       </button>
     </motion.form>
   );
