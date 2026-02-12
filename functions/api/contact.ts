@@ -26,7 +26,7 @@ export async function onRequestPost(context) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        from: "onboarding@resend.dev",
+        from: "אתר עו״ד משה אמסלם <noreply@ams-law.com>",
         to: "moshe@ams-law.com",
         reply_to: body.email,
         subject: `פנייה חדשה מהאתר${body.subject ? ` - ${body.subject}` : ""}`,
