@@ -78,6 +78,9 @@ export default function AboutPage() {
               </h2>
               <div className="space-y-4 text-light-secondary text-lg leading-relaxed">
                 <p>
+                  עו״ד משה אמסלם בעל תואר ראשון במשפטים (LLB) במכללה למנהל ראשון לציון וחבר לשכת עורכי הדין משנת 2021.
+                </p>
+                <p>
                   עו״ד משה אמסלם הינו עורך דין המתמחה בתחום המקרקעין וההתחדשות העירונית.
                 </p>
                 <p>
@@ -87,13 +90,6 @@ export default function AboutPage() {
                 <p>
                   אנו מאמינים בבניית יחסי אמון ארוכי טווח עם לקוחותינו, ופועלים
                   להשגת התוצאות הטובות ביותר בכל עסקה.
-                </p>
-              </div>
-
-              {/* Placeholder for additional info */}
-              <div className="mt-8 p-6 bg-dark rounded-lg border border-primary/20">
-                <p className="text-light-tertiary text-sm">
-                  * פרטים נוספים על רקע, השכלה וניסיון מקצועי יתווספו בהמשך
                 </p>
               </div>
             </motion.div>
