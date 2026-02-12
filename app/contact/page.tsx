@@ -96,18 +96,24 @@ export default function ContactPage() {
                 ))}
               </div>
 
-              {/* Map Placeholder */}
+              {/* Map */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.3 }}
-                className="mt-8 bg-dark rounded-lg border border-dark-tertiary aspect-video flex items-center justify-center"
+                className="mt-8 rounded-lg border border-dark-tertiary aspect-video overflow-hidden"
               >
-                <div className="text-center text-light-tertiary">
-                  <MapPin className="w-10 h-10 mx-auto mb-2 text-primary/50" />
-                  <p className="text-sm">מפה תתווסף בהמשך</p>
-                </div>
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3381.2!2d34.7901!3d32.0694!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x151d4b9b0c5f5b1b%3A0x0!2sMidtown%20Tower%2C%20Derech%20Menachem%20Begin%20144%2C%20Tel%20Aviv!5e0!3m2!1siw!2sil!4v1700000000000"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title="מיקום המשרד"
+                />
               </motion.div>
             </motion.div>
 
