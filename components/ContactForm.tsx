@@ -40,7 +40,7 @@ export default function ContactForm() {
 
       if (!res.ok) {
         const data = await res.json();
-        throw new Error(data.error || "שגיאה בשליחת הטופס");
+        throw new Error(data.detail || data.error || "שגיאה בשליחת הטופס");
       }
 
       setIsSubmitted(true);
