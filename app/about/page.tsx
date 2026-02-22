@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Scale, Award, Users, Target, MapPin, Navigation } from "lucide-react";
+import Image from "next/image";
 import CTASection from "@/components/CTASection";
 
 const values = [
@@ -52,18 +53,22 @@ export default function AboutPage() {
       <section className="section-padding bg-dark-secondary">
         <div className="container-custom">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            {/* Image Placeholder */}
+            {/* Attorney Photo */}
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5 }}
-              className="bg-dark rounded-xl border border-dark-tertiary aspect-[4/5] flex items-center justify-center"
+              className="rounded-xl border border-dark-tertiary aspect-[4/5] overflow-hidden"
             >
-              <div className="text-center text-light-tertiary">
-                <Scale className="w-20 h-20 mx-auto mb-4 text-primary/50" />
-                <p>תמונת עורך הדין</p>
-              </div>
+              <Image
+                src="/moshe-amsalem.jpeg"
+                alt="עו״ד משה אמסלם"
+                width={600}
+                height={750}
+                className="w-full h-full object-cover object-top"
+                priority
+              />
             </motion.div>
 
             {/* Text Content */}
