@@ -36,9 +36,7 @@ export default function ServicesPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                className={`flex flex-col md:flex-row gap-8 items-start ${
-                  index % 2 === 1 ? "md:flex-row-reverse" : ""
-                }`}
+                className="flex flex-col md:flex-row gap-8 items-start"
               >
                 {/* Icon */}
                 <div className="flex-shrink-0">

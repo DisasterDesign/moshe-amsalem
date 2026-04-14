@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Send, CheckCircle, Loader2, AlertCircle } from "lucide-react";
+import { Turnstile, TurnstileInstance } from "@marsidev/react-turnstile";
 
 const subjects = [
   "עסקת מקרקעין",
@@ -14,10 +15,14 @@ const subjects = [
   "אחר",
 ];
 
+const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || "";
+
 export default function ContactForm() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const turnstileRef = useRef<TurnstileInstance | null>(null);
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -28,14 +33,20 @@ export default function ContactForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
     setError("");
+
+    if (!turnstileToken) {
+      setError("אנא המתן לסיום אימות האבטחה");
+      return;
+    }
+
+    setIsLoading(true);
 
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({ ...formData, turnstileToken }),
       });
 
       if (!res.ok) {
@@ -47,9 +58,13 @@ export default function ContactForm() {
       setTimeout(() => {
         setIsSubmitted(false);
         setFormData({ name: "", phone: "", email: "", subject: "", message: "" });
+        setTurnstileToken(null);
+        turnstileRef.current?.reset();
       }, 4000);
     } catch (err) {
       setError(err instanceof Error ? err.message : "שגיאה בשליחת הטופס, נסה שוב");
+      setTurnstileToken(null);
+      turnstileRef.current?.reset();
     } finally {
       setIsLoading(false);
     }
@@ -174,6 +189,20 @@ export default function ContactForm() {
         />
       </div>
 
+      {/* Turnstile */}
+      {TURNSTILE_SITE_KEY && (
+        <div className="mt-6 flex justify-center" dir="ltr">
+          <Turnstile
+            ref={turnstileRef}
+            siteKey={TURNSTILE_SITE_KEY}
+            options={{ language: "he", theme: "dark" }}
+            onSuccess={(token) => setTurnstileToken(token)}
+            onError={() => setTurnstileToken(null)}
+            onExpire={() => setTurnstileToken(null)}
+          />
+        </div>
+      )}
+
       {/* Error */}
       {error && (
         <div className="mt-4 p-4 bg-red-900/20 border border-red-500/30 rounded-lg flex items-center gap-3">
@@ -185,7 +214,7 @@ export default function ContactForm() {
       {/* Submit */}
       <button
         type="submit"
-        disabled={isLoading}
+        disabled={isLoading || !turnstileToken}
         className="btn-primary w-full mt-6 flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
       >
         {isLoading ? (
