@@ -49,6 +49,7 @@ const testimonials: Testimonial[] = [
       "תודה שאתה תמיד זמין, במאור פנים ובעצות טובות. מעריכים ומוקירים!",
     ],
     time: "8:18",
+    realSrc: "/testimonials/efrat.png",
   },
 ];
 
