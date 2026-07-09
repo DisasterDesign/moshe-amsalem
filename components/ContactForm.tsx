@@ -81,11 +81,11 @@ export default function ContactForm() {
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="bg-dark-secondary border border-dark-tertiary rounded-lg p-8 text-center"
+        className="bg-white border border-line rounded-2xl p-8 text-center shadow-sm"
       >
         <CheckCircle className="w-16 h-16 text-primary mx-auto mb-4" />
-        <h3 className="text-xl font-semibold text-light mb-2">הטופס נשלח בהצלחה!</h3>
-        <p className="text-light-secondary">ניצור איתך קשר בהקדם.</p>
+        <h3 className="font-heading text-xl font-bold text-ink mb-2">הטופס נשלח בהצלחה!</h3>
+        <p className="text-ink-soft">ניצור איתך קשר בהקדם.</p>
       </motion.div>
     );
   }
@@ -97,12 +97,12 @@ export default function ContactForm() {
       viewport={{ once: true }}
       transition={{ duration: 0.5 }}
       onSubmit={handleSubmit}
-      className="bg-dark-secondary border border-dark-tertiary rounded-lg p-6 md:p-8"
+      className="bg-white border border-line rounded-2xl p-6 md:p-8 shadow-sm"
     >
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Name */}
         <div>
-          <label htmlFor="name" className="block text-light mb-2">
+          <label htmlFor="name" className="block text-ink font-medium mb-2">
             שם מלא <span className="text-primary">*</span>
           </label>
           <input
@@ -112,14 +112,14 @@ export default function ContactForm() {
             value={formData.name}
             onChange={handleChange}
             required
-            className="w-full bg-dark border border-dark-tertiary rounded-lg px-4 py-3 text-light placeholder:text-light-tertiary focus:outline-none focus:border-primary focus:shadow-lg focus:shadow-primary/10 transition-all duration-300"
+            className="input-field"
             placeholder="הכנס שם מלא"
           />
         </div>
 
         {/* Phone */}
         <div>
-          <label htmlFor="phone" className="block text-light mb-2">
+          <label htmlFor="phone" className="block text-ink font-medium mb-2">
             טלפון <span className="text-primary">*</span>
           </label>
           <input
@@ -129,14 +129,14 @@ export default function ContactForm() {
             value={formData.phone}
             onChange={handleChange}
             required
-            className="w-full bg-dark border border-dark-tertiary rounded-lg px-4 py-3 text-light placeholder:text-light-tertiary focus:outline-none focus:border-primary focus:shadow-lg focus:shadow-primary/10 transition-all duration-300"
+            className="input-field"
             placeholder="050-XXX-XXXX"
           />
         </div>
 
         {/* Email */}
         <div>
-          <label htmlFor="email" className="block text-light mb-2">
+          <label htmlFor="email" className="block text-ink font-medium mb-2">
             דוא״ל <span className="text-primary">*</span>
           </label>
           <input
@@ -146,14 +146,14 @@ export default function ContactForm() {
             value={formData.email}
             onChange={handleChange}
             required
-            className="w-full bg-dark border border-dark-tertiary rounded-lg px-4 py-3 text-light placeholder:text-light-tertiary focus:outline-none focus:border-primary focus:shadow-lg focus:shadow-primary/10 transition-all duration-300"
+            className="input-field"
             placeholder="example@email.com"
           />
         </div>
 
         {/* Subject */}
         <div>
-          <label htmlFor="subject" className="block text-light mb-2">
+          <label htmlFor="subject" className="block text-ink font-medium mb-2">
             נושא הפנייה
           </label>
           <select
@@ -161,7 +161,7 @@ export default function ContactForm() {
             name="subject"
             value={formData.subject}
             onChange={handleChange}
-            className="w-full bg-dark border border-dark-tertiary rounded-lg px-4 py-3 text-light focus:outline-none focus:border-primary focus:shadow-lg focus:shadow-primary/10 transition-all duration-300 cursor-pointer"
+            className="input-field cursor-pointer"
           >
             <option value="">בחר נושא</option>
             {subjects.map((subject) => (
@@ -175,7 +175,7 @@ export default function ContactForm() {
 
       {/* Message */}
       <div className="mt-6">
-        <label htmlFor="message" className="block text-light mb-2">
+        <label htmlFor="message" className="block text-ink font-medium mb-2">
           תוכן ההודעה
         </label>
         <textarea
@@ -184,7 +184,7 @@ export default function ContactForm() {
           value={formData.message}
           onChange={handleChange}
           rows={5}
-          className="w-full bg-dark border border-dark-tertiary rounded-lg px-4 py-3 text-light placeholder:text-light-tertiary focus:outline-none focus:border-primary focus:shadow-lg focus:shadow-primary/10 transition-all duration-300 resize-none"
+          className="input-field resize-none"
           placeholder="ספר/י לנו על הפנייה שלך..."
         />
       </div>
@@ -195,7 +195,7 @@ export default function ContactForm() {
           <Turnstile
             ref={turnstileRef}
             siteKey={TURNSTILE_SITE_KEY}
-            options={{ language: "he", theme: "dark" }}
+            options={{ language: "he", theme: "light" }}
             onSuccess={(token) => setTurnstileToken(token)}
             onError={() => setTurnstileToken(null)}
             onExpire={() => setTurnstileToken(null)}
@@ -205,9 +205,9 @@ export default function ContactForm() {
 
       {/* Error */}
       {error && (
-        <div className="mt-4 p-4 bg-red-900/20 border border-red-500/30 rounded-lg flex items-center gap-3">
-          <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0" />
-          <p className="text-red-400 text-sm">{error}</p>
+        <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center gap-3">
+          <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0" />
+          <p className="text-red-600 text-sm">{error}</p>
         </div>
       )}
 

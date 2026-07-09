@@ -34,3 +34,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# raw client whatsapp screenshots (contain PII — do not commit)
+/whatapp/
+
+# local editor / claude settings
+/.claude/

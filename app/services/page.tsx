@@ -3,52 +3,44 @@
 import { motion } from "framer-motion";
 import { services } from "@/components/ServicesGrid";
 import CTASection from "@/components/CTASection";
+import { Check } from "lucide-react";
 
 export default function ServicesPage() {
   return (
     <>
-      {/* Hero Section */}
-      <section className="pt-24 md:pt-32 pb-12 md:pb-16 bg-dark">
+      {/* Header band */}
+      <section className="pt-24 md:pt-28 pb-12 md:pb-16 bg-dark">
         <div className="container-custom text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <h1 className="heading-xl mb-6">
-              תחומי <span className="text-primary">התמחות</span>
-            </h1>
-            <p className="text-light-secondary text-lg max-w-2xl mx-auto">
-              משרד עו״ד משה אמסלם מעניק ליווי משפטי מקצועי ואישי במגוון תחומים
-            </p>
-          </motion.div>
+          <h1 className="heading-xl mb-4 text-white">
+            תחומי <span className="text-gold">התמחות</span>
+          </h1>
+          <p className="text-light-secondary text-lg max-w-2xl mx-auto">
+            ליווי משפטי מקצועי ואישי במגוון תחומים — עם יחס אנושי ותשומת לב לפרטים.
+          </p>
         </div>
       </section>
 
       {/* Services Detail */}
-      <section className="section-padding bg-dark-secondary">
+      <section className="section-padding bg-cream">
         <div className="container-custom">
-          <div className="space-y-16">
+          <div className="space-y-14">
             {services.map((service, index) => (
               <motion.div
                 key={service.title}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="flex flex-col md:flex-row gap-8 items-start"
+                transition={{ duration: 0.5, delay: index * 0.05 }}
+                className="flex flex-col gap-6 rounded-2xl border border-line bg-white p-6 shadow-sm md:flex-row md:items-start md:p-8"
               >
-                {/* Icon */}
                 <div className="flex-shrink-0">
-                  <div className="w-20 h-20 rounded-xl bg-dark border border-primary/30 flex items-center justify-center">
-                    <service.icon className="w-10 h-10 text-primary" />
+                  <div className="flex h-20 w-20 items-center justify-center rounded-2xl bg-primary/10">
+                    <service.icon className="h-10 w-10 text-primary" />
                   </div>
                 </div>
-
-                {/* Content */}
                 <div className="flex-1">
-                  <h2 className="heading-md text-light mb-4">{service.title}</h2>
-                  <p className="text-light-secondary text-lg leading-relaxed mb-4">
+                  <h2 className="heading-md text-ink mb-3">{service.title}</h2>
+                  <p className="text-ink-soft text-lg leading-relaxed mb-4">
                     {service.description}
                   </p>
                   <ServiceDetails title={service.title} />
@@ -90,11 +82,11 @@ function ServiceDetails({ title }: { title: string }) {
       "בקשות לקיום צוואה",
       "חלוקת עיזבון בין יורשים",
     ],
-    "הסכמי ממון": [
+    "הסכם ממון והסכם חיים משותפים": [
       "הסכמי ממון לפני נישואין",
       "הסכמי ממון במהלך הנישואין",
-      "הגנה על נכסים",
-      "הפרדה רכושית",
+      "הסכמי חיים משותפים לידועים בציבור",
+      "הפרדה והגנה רכושית",
     ],
     "ייפוי כוח מתמשך": [
       "עריכת ייפוי כוח מתמשך",
@@ -105,14 +97,15 @@ function ServiceDetails({ title }: { title: string }) {
   };
 
   const items = details[title] || [];
-
   if (items.length === 0) return null;
 
   return (
-    <ul className="space-y-2">
+    <ul className="grid gap-2 sm:grid-cols-2">
       {items.map((item, index) => (
-        <li key={index} className="flex items-center gap-3 text-light-tertiary">
-          <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+        <li key={index} className="flex items-center gap-3 text-ink-soft">
+          <span className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-primary/10">
+            <Check className="h-3 w-3 text-primary" />
+          </span>
           {item}
         </li>
       ))}

@@ -16,12 +16,14 @@ export const services = [
   {
     icon: Building2,
     title: "עסקאות מקרקעין",
-    description: "ליווי וייצוג במכירה/רכישה של נכסי מגורים/מסחר - ליווי משפטי מלא מתחילת המשא ומתן ועד לרישום הזכויות בטאבו.",
+    description:
+      "ליווי וייצוג במכירה/רכישה של נכסי מגורים/מסחר - ליווי משפטי מלא מתחילת המשא ומתן ועד לרישום הזכויות בטאבו.",
   },
   {
     icon: Home,
     title: "שכירות",
-    description: "עריכת הסכמי שכירות לנכסי מגורים/מסחר והגנה על זכויות המשכיר והשוכר.",
+    description:
+      "עריכת הסכמי שכירות לנכסי מגורים/מסחר והגנה על זכויות המשכיר והשוכר.",
   },
   {
     icon: Building,
@@ -36,7 +38,8 @@ export const services = [
   {
     icon: Heart,
     title: "הסכם ממון והסכם חיים משותפים",
-    description: "עריכת הסכמי ממון (לזוגות נשואים או לזוגות שעומדים להינשא) והסכמי חיים משותפים (לידועים בציבור)",
+    description:
+      "עריכת הסכמי ממון (לזוגות נשואים או לזוגות שעומדים להינשא) והסכמי חיים משותפים (לידועים בציבור)",
   },
   {
     icon: FileCheck,
@@ -52,7 +55,7 @@ interface ServicesGridProps {
 
 export default function ServicesGrid({ showTitle = true, showCTA = true }: ServicesGridProps) {
   return (
-    <section className="section-padding bg-dark">
+    <section id="services" className="section-padding bg-cream">
       <div className="container-custom">
         {showTitle && (
           <motion.div
@@ -62,11 +65,14 @@ export default function ServicesGrid({ showTitle = true, showCTA = true }: Servi
             transition={{ duration: 0.5 }}
             className="text-center mb-12"
           >
-            <h2 className="heading-lg mb-4">
+            <span className="text-sm font-semibold uppercase tracking-wider text-primary">
+              במה אני יכול לעזור
+            </span>
+            <h2 className="heading-lg mt-3 mb-4 text-ink">
               תחומי <span className="text-primary">התמחות</span>
             </h2>
-            <p className="text-light-secondary text-lg max-w-2xl mx-auto">
-              ליווי משפטי מקצועי ואישי בכל סוגי העסקאות במקרקעין
+            <p className="text-ink-soft text-lg max-w-2xl mx-auto">
+              ליווי משפטי מקצועי ואישי בכל שלב, עם יחס אנושי ותשומת לב לפרטים.
             </p>
           </motion.div>
         )}
