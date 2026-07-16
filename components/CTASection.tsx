@@ -22,7 +22,7 @@ export default function CTASection() {
             מחפשים <span className="text-gold">ליווי משפטי</span> שרואה אתכם?
           </h2>
           <p className="text-light-secondary text-lg mb-8">
-            פגישת ייעוץ ראשונית ללא התחייבות. נשמח ללוות אתכם בכל שלבי העסקה — באופן
+            פגישת ייעוץ ראשונית ללא התחייבות. נשמח ללוות אתכם בכל שלבי העסקה - באופן
             אישי, זמין וברור.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">

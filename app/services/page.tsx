@@ -15,7 +15,7 @@ export default function ServicesPage() {
             תחומי <span className="text-gold">התמחות</span>
           </h1>
           <p className="text-light-secondary text-lg max-w-2xl mx-auto">
-            ליווי משפטי מקצועי ואישי במגוון תחומים — עם יחס אנושי ותשומת לב לפרטים.
+            ליווי משפטי מקצועי ואישי במגוון תחומים - עם יחס אנושי ותשומת לב לפרטים.
           </p>
         </div>
       </section>

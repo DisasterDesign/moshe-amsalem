@@ -10,7 +10,7 @@ export default function ContactPage() {
             צור <span className="text-gold">קשר</span>
           </h1>
           <p className="text-light-secondary text-lg max-w-2xl mx-auto">
-            נשמח לשמוע ממך ולסייע בכל שאלה או פנייה — בטלפון, בוואטסאפ או במייל.
+            נשמח לשמוע ממך ולסייע בכל שאלה או פנייה - בטלפון, בוואטסאפ או במייל.
           </p>
         </div>
       </section>

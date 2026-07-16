@@ -22,7 +22,7 @@ export default function AboutPage() {
             אודות <span className="text-gold">המשרד</span>
           </h1>
           <p className="text-light-secondary text-lg max-w-2xl mx-auto">
-            משרד עו״ד משה אמסלם — מומחיות, מקצועיות ויחס אישי.
+            משרד עו״ד משה אמסלם - מומחיות, מקצועיות ויחס אישי.
           </p>
         </div>
       </section>
