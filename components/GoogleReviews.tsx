@@ -1,48 +1,83 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { Star } from "lucide-react";
+import { Star, ChevronRight, ChevronLeft, PenLine } from "lucide-react";
 
 /**
- * Real Google reviews for משה אמסלם - משרד עורכי דין, curated manually
- * (per DECISIONS.md — the official Places API caps at ~5 reviews and its ToS
- * restricts caching). Snapshot: 5.0★ · 4 reviews (July 2026). Refresh periodically,
- * or wire a Featurable headless feed later. Attribution: author name + profile link.
+ * Live Google reviews.
+ *
+ * Data comes from /api/reviews (Cloudflare Pages Function -> Google Places API,
+ * cached 24h). Until that function has an API key configured, the component
+ * renders the bundled snapshot below so the section is never empty or wrong.
+ * Snapshot taken July 2026: 5.0, 5 reviews.
  */
-const REVIEWS = [
+
+type Review = {
+  id: string;
+  author: string;
+  authorPhoto?: string;
+  authorUri?: string;
+  rating: number;
+  text: string;
+  relativeTime: string;
+  reviewUri?: string;
+};
+
+const FALLBACK_RATING = 5.0;
+const FALLBACK_TOTAL = 5;
+
+const FALLBACK_REVIEWS: Review[] = [
   {
-    name: "שלו אלימלך",
-    initials: "שא",
+    id: "shalo",
+    author: "שלו אלימלך",
     rating: 5,
-    time: "לפני 3 חודשים",
+    relativeTime: "לפני 3 חודשים",
     text: "אני רוצה להמליץ בחום על עורך הדין משה אמסלם. קיבלתי ממנו שירות מקצועי, יסודי ואמין לאורך כל הדרך. הוא היה זמין לכל שאלה, הסביר כל שלב בצורה ברורה ונתן לי תחושת ביטחון מלאה בתהליך.",
   },
   {
-    name: "Efrat Shoshana",
-    initials: "ES",
+    id: "efrat",
+    author: "Efrat Shoshana",
     rating: 5,
-    time: "לפני חודש",
-    text: "זכות גדולה לעבוד עם עורך דין משה אמסלם. עברנו יחד כמה עסקאות והוא תמיד היה שם בשבילי – זמין, קשוב ומנוסה מאוד. הוא הופך כל תהליך מורכב לפשוט ורגוע בזכות האדיבות והאכפתיות שלו. מי שמחפש ליווי צמוד ומקצועי, זו הכתובת. תודה על הכל!",
+    relativeTime: "לפני חודשיים",
+    text: "זכות גדולה לעבוד עם עורך דין משה אמסלם. עברנו יחד כמה עסקאות והוא תמיד היה שם בשבילי – זמין, קשוב ומנוסה מאוד. הוא הופך כל תהליך מורכב לפשוט ורגוע בזכות האדיבות והאכפתיות שלו. מי שמחפש ליווי צמוד ומקצועי, זה הכתובת. תודה על הכל!",
   },
   {
-    name: "נווה לוצקי",
-    initials: "נל",
+    id: "miki",
+    author: "miki hai",
     rating: 5,
-    time: "לפני חודשיים",
+    relativeTime: "לפני 3 ימים",
+    text: "מושיקו ליווה אותי בעסקת רכישה של דירה, מקצועי מאוד, מענה בכל שעות היום. בזכות מושיקו קבלתי חיים חדשים מעבר לעזרה במכירת דירה.",
+  },
+  {
+    id: "neve",
+    author: "נווה לוצקי",
+    rating: 5,
+    relativeTime: "לפני חודשיים",
     text: "מושיקו ליווה אותי בעסקת רכישה של דירה, מקצועי מאוד, זמין ונעים. ממליץ בחום!",
   },
   {
-    name: "Yossi Parienti",
-    initials: "YP",
+    id: "yossi",
+    author: "Yossi Parienti",
     rating: 5,
-    time: "לפני 4 חודשים",
-    text: "היה לי איתו כמה וכמה עבודות, עורך דין נאמן מאוד, יסודי מאוד. בקיצור מומלץ!",
+    relativeTime: "לפני 4 חודשים",
+    text: "היה לי איתו כמה וכמה עבודות עורך דין נאמן מאוד יסודי מאוד בקיצור מומלץ",
   },
 ];
 
-const GOOGLE_PROFILE_URL = "https://maps.app.goo.gl/6nsUfK3hiMxV23n29";
-const RATING = "5.0";
-const COUNT = "4";
+const PROFILE_URL = "https://maps.app.goo.gl/T2Azt3EGu4W1iXd49";
+// Opens Google's "write a review" dialog straight from the office listing.
+const WRITE_REVIEW_URL =
+  "https://www.google.com/maps/place//data=!4m3!3m2!1s0xac559dd818e0d573:0xfd1367a8b9dff4b1!12e1";
+
+function initialsOf(name: string) {
+  return name
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((w) => w[0])
+    .join("");
+}
 
 function GoogleG({ className = "" }: { className?: string }) {
   return (
@@ -55,69 +90,175 @@ function GoogleG({ className = "" }: { className?: string }) {
   );
 }
 
-export default function GoogleReviews() {
+function Stars({ value }: { value: number }) {
   return (
-    <section className="section-padding bg-cream-soft">
+    <span className="flex text-gold" aria-label={`${value} כוכבים`}>
+      {[...Array(Math.max(1, Math.round(value)))].map((_, i) => (
+        <Star key={i} size={16} className="fill-current" />
+      ))}
+    </span>
+  );
+}
+
+export default function GoogleReviews() {
+  const [rating, setRating] = useState<number>(FALLBACK_RATING);
+  const [total, setTotal] = useState<number>(FALLBACK_TOTAL);
+  const [reviews, setReviews] = useState<Review[]>(FALLBACK_REVIEWS);
+  const [profileUrl, setProfileUrl] = useState<string>(PROFILE_URL);
+  const [writeUrl, setWriteUrl] = useState<string>(WRITE_REVIEW_URL);
+  const scrollerRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch("/api/reviews")
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data) => {
+        if (cancelled || !data || !data.ok) return;
+        if (Array.isArray(data.reviews) && data.reviews.length > 0) {
+          setReviews(data.reviews);
+        }
+        if (typeof data.rating === "number") setRating(data.rating);
+        if (typeof data.total === "number") setTotal(data.total);
+        if (data.profileUrl) setProfileUrl(data.profileUrl);
+        if (data.writeReviewUrl) setWriteUrl(data.writeReviewUrl);
+      })
+      .catch(() => {
+        /* keep the bundled snapshot */
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const scroll = (dir: 1 | -1) => {
+    scrollerRef.current?.scrollBy({ left: dir * 340, behavior: "smooth" });
+  };
+
+  return (
+    <section className="section-padding bg-cream-soft overflow-hidden">
       <div className="container-custom">
+        {/* Summary bar */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="mb-10 flex flex-col items-center gap-4 rounded-2xl border border-line bg-white p-6 text-center shadow-sm md:flex-row md:justify-between md:text-right"
+          className="mb-8 flex flex-col items-center gap-5 rounded-2xl border border-line bg-white p-6 text-center md:flex-row md:justify-between md:text-right"
         >
           <div className="flex items-center gap-4">
             <GoogleG className="h-10 w-10" />
             <div>
               <div className="font-heading text-lg font-bold text-ink">ביקורות Google</div>
-              <div className="flex items-center gap-2">
-                <span className="text-2xl font-bold text-ink">{RATING}</span>
-                <span className="flex text-gold">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} size={16} className="fill-current" />
-                  ))}
-                </span>
-                <span className="text-sm text-ink-muted">({COUNT} ביקורות)</span>
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="text-2xl font-bold text-ink">{rating.toFixed(1)}</span>
+                <Stars value={rating} />
+                <span className="text-sm text-ink-muted">({total} ביקורות)</span>
               </div>
             </div>
           </div>
-          <a
-            href={GOOGLE_PROFILE_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-outline"
-          >
-            לכל הביקורות בגוגל
-          </a>
+
+          <div className="flex flex-col gap-3 sm:flex-row">
+            <a
+              href={writeUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-primary inline-flex items-center justify-center gap-2"
+            >
+              <PenLine size={18} />
+              כתבו ביקורת בגוגל
+            </a>
+            <a
+              href={profileUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-outline text-center"
+            >
+              לכל הביקורות
+            </a>
+          </div>
         </motion.div>
 
-        <div className="grid gap-6 md:grid-cols-2">
-          {REVIEWS.map((r, index) => (
-            <motion.div
-              key={r.name}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="rounded-2xl border border-line bg-white p-6 shadow-sm"
+        {/* Carousel */}
+        <div className="mb-4 flex items-center justify-between">
+          <p className="text-sm text-ink-muted">מתעדכן אוטומטית מגוגל</p>
+          <div className="flex gap-2">
+            <button
+              type="button"
+              onClick={() => scroll(1)}
+              aria-label="הביקורת הקודמת"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-line bg-white text-ink transition-colors hover:bg-primary hover:text-white"
+            >
+              <ChevronRight size={18} />
+            </button>
+            <button
+              type="button"
+              onClick={() => scroll(-1)}
+              aria-label="הביקורת הבאה"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-line bg-white text-ink transition-colors hover:bg-primary hover:text-white"
+            >
+              <ChevronLeft size={18} />
+            </button>
+          </div>
+        </div>
+
+        <div
+          ref={scrollerRef}
+          className="flex snap-x snap-mandatory gap-5 overflow-x-auto pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        >
+          {reviews.map((r) => (
+            <article
+              key={r.id}
+              className="flex w-[320px] flex-none snap-start flex-col rounded-2xl border border-line bg-white p-6 shadow-sm"
             >
               <div className="mb-4 flex items-center gap-3">
-                <div className="flex h-11 w-11 items-center justify-center rounded-full bg-primary/10 font-bold text-primary">
-                  {r.initials}
+                {r.authorPhoto ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={r.authorPhoto}
+                    alt=""
+                    className="h-11 w-11 rounded-full object-cover"
+                    loading="lazy"
+                  />
+                ) : (
+                  <div className="flex h-11 w-11 items-center justify-center rounded-full bg-primary/10 font-bold text-primary">
+                    {initialsOf(r.author)}
+                  </div>
+                )}
+                <div className="min-w-0">
+                  {r.authorUri ? (
+                    <a
+                      href={r.authorUri}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block truncate font-semibold text-ink hover:text-primary"
+                    >
+                      {r.author}
+                    </a>
+                  ) : (
+                    <div className="truncate font-semibold text-ink">{r.author}</div>
+                  )}
+                  <div className="text-xs text-ink-muted">{r.relativeTime}</div>
                 </div>
-                <div>
-                  <div className="font-semibold text-ink">{r.name}</div>
-                  <div className="text-xs text-ink-muted">{r.time}</div>
-                </div>
-                <GoogleG className="ms-auto h-5 w-5" />
+                <GoogleG className="ms-auto h-5 w-5 flex-none" />
               </div>
-              <div className="mb-3 flex text-gold">
-                {[...Array(r.rating)].map((_, i) => (
-                  <Star key={i} size={16} className="fill-current" />
-                ))}
+
+              <div className="mb-3">
+                <Stars value={r.rating} />
               </div>
+
               <p className="text-ink-soft text-sm leading-relaxed">{r.text}</p>
-            </motion.div>
+
+              {r.reviewUri && (
+                <a
+                  href={r.reviewUri}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-4 text-xs font-medium text-primary hover:underline"
+                >
+                  צפייה בגוגל
+                </a>
+              )}
+            </article>
           ))}
         </div>
       </div>

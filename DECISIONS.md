@@ -68,3 +68,39 @@ Profile / Place ID של הלקוח. יעד: Featurable-headless עם attribution
 **סטטוס / TODO:** לקבל Place ID / קישור לפרופיל; לחווט Featurable או לעדכן ידנית.
 
 **מועמד לחילוץ?** כן (שירות חיצוני — Featurable).
+
+---
+
+## 2026-07-23 — ביקורות גוגל חיות דרך Places API (New) + Pages Function (מחליף את ההחלטה הקודמת)
+
+**הקשר:**
+הלקוח ביקש חיבור API מתעדכן יומי לדירוג ולביקורות, בקרוסלה בדף הבית, כולל
+כפתור לכתיבת ביקורת. ההחלטה הקודמת (ידני / Featurable) מוחלפת.
+
+**אופציות שנשקלו:**
+- Featurable headless — עדיין דורש הרשמה לצד-שלישי, ותלות בשירות חינמי.
+- Places API (New) דרך Pages Function — first-party, בלי תלות חיצונית.
+- שמירה על ידני — נדחה, הלקוח ביקש עדכון אוטומטי.
+
+**ההחלטה:**
+`functions/api/reviews.ts` — Cloudflare Pages Function שקוראת ל-Places API (New),
+מחזירה JSON מנורמל, ומקאשת **24 שעות** ב-edge cache (`caches.default`).
+המפתח נשאר בצד השרת ולא נחשף בדפדפן. `?refresh=1` עוקף קאש.
+
+- Place resolution: `GOOGLE_PLACE_ID` אם קיים, אחרת Text Search לפי `GOOGLE_PLACE_QUERY`.
+- סינון: מוצגות רק ביקורות עם דירוג ≥ 4 וטקסט לא ריק ("התגובות הנבחרות").
+- `GoogleReviews.tsx` הפך לקרוסלה, מושך מה-API ב-`useEffect`, **ונופל חזרה
+  לסנאפשוט מוטמע** (5 ביקורות, יולי 2026) אם ה-API לא זמין — הסקשן לעולם לא ריק.
+- כפתור "כתבו ביקורת בגוגל": ה-API מחזיר `writeReviewUrl` מדויק לפי place id;
+  ה-fallback משתמש ב-`.../data=!4m3!3m2!1s<FEATURE_ID>!12e1` שפותח את דיאלוג
+  כתיבת הביקורת ישירות.
+
+**משמעויות:**
+- דורש `GOOGLE_PLACES_API_KEY` ב-Cloudflare Pages (ראה `.env.example`).
+- מגבלת Google: **עד 5 ביקורות** מה-API, בלי שליטה על מיון. מעבר לכך נדרש
+  צד-שלישי. כרגע ללקוח יש בדיוק 5, אז אין פער.
+- SKU: Place Details Enterprise+Atmosphere. עם קאש יומי — ~30-60 קריאות/חודש,
+  הרבה מתחת ל-free tier.
+- attribution נשמר: שם המחבר, תמונה, קישור לפרופיל וקישור לביקורת.
+
+**מועמד לחילוץ?** כן — primitive `google-reviews` (Pages Function + קרוסלה + fallback).
