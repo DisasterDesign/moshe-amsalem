@@ -16,6 +16,9 @@ const subjects = [
 ];
 
 const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || "";
+// When no site key is configured the widget never renders, so the form must not
+// wait for a token it will never get - otherwise submit stays disabled forever.
+const TURNSTILE_ENABLED = TURNSTILE_SITE_KEY.length > 0;
 
 export default function ContactForm() {
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -35,7 +38,7 @@ export default function ContactForm() {
     e.preventDefault();
     setError("");
 
-    if (!turnstileToken) {
+    if (TURNSTILE_ENABLED && !turnstileToken) {
       setError("אנא המתן לסיום אימות האבטחה");
       return;
     }
@@ -214,7 +217,7 @@ export default function ContactForm() {
       {/* Submit */}
       <button
         type="submit"
-        disabled={isLoading || !turnstileToken}
+        disabled={isLoading || (TURNSTILE_ENABLED && !turnstileToken)}
         className="btn-primary w-full mt-6 flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
       >
         {isLoading ? (

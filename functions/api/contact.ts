@@ -51,31 +51,37 @@ export async function onRequestPost(context) {
       );
     }
 
-    if (!body.turnstileToken) {
-      return new Response(
-        JSON.stringify({ error: "אימות אבטחה נדרש" }),
-        { status: 403, headers: jsonHeaders }
-      );
-    }
-
-    const verifyRes = await fetch(
-      "https://challenges.cloudflare.com/turnstile/v0/siteverify",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams({
-          secret: context.env.TURNSTILE_SECRET_KEY || "",
-          response: String(body.turnstileToken),
-          remoteip: context.request.headers.get("CF-Connecting-IP") || "",
-        }),
+    // Turnstile is only enforced when a secret is configured. Without it the
+    // widget never renders client-side, so demanding a token would reject every
+    // legitimate submission and silently lose leads.
+    const turnstileSecret = context.env.TURNSTILE_SECRET_KEY;
+    if (turnstileSecret) {
+      if (!body.turnstileToken) {
+        return new Response(
+          JSON.stringify({ error: "אימות אבטחה נדרש" }),
+          { status: 403, headers: jsonHeaders }
+        );
       }
-    );
-    const verifyData = await verifyRes.json();
-    if (!verifyData.success) {
-      return new Response(
-        JSON.stringify({ error: "אימות אבטחה נכשל, נסה שוב" }),
-        { status: 403, headers: jsonHeaders }
+
+      const verifyRes = await fetch(
+        "https://challenges.cloudflare.com/turnstile/v0/siteverify",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: new URLSearchParams({
+            secret: turnstileSecret,
+            response: String(body.turnstileToken),
+            remoteip: context.request.headers.get("CF-Connecting-IP") || "",
+          }),
+        }
       );
+      const verifyData = await verifyRes.json();
+      if (!verifyData.success) {
+        return new Response(
+          JSON.stringify({ error: "אימות אבטחה נכשל, נסה שוב" }),
+          { status: 403, headers: jsonHeaders }
+        );
+      }
     }
 
     const name = escapeHtml(body.name);
