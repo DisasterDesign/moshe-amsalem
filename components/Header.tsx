@@ -162,8 +162,8 @@ export default function Header() {
                     <div
                       className={`absolute right-0 top-full w-72 pt-3 transition-all duration-200 ${
                         open
-                          ? "pointer-events-auto translate-y-0 opacity-100"
-                          : "pointer-events-none -translate-y-1 opacity-0"
+                          ? "visible pointer-events-auto translate-y-0 opacity-100"
+                          : "invisible pointer-events-none -translate-y-1 opacity-0"
                       }`}
                     >
                       <ul className="overflow-hidden rounded-xl border border-line bg-white py-2 shadow-2xl shadow-dark/25">
@@ -235,8 +235,8 @@ export default function Header() {
       {/* Mobile drawer */}
       <div
         id="mobile-nav"
-        className={`overflow-hidden border-t border-white/10 bg-dark transition-[max-height] duration-300 lg:hidden ${
-          mobileOpen ? "max-h-[80vh] overflow-y-auto" : "max-h-0"
+        className={`border-t border-white/10 bg-dark transition-[max-height] duration-300 lg:hidden ${
+          mobileOpen ? "visible max-h-[80vh] overflow-y-auto" : "invisible max-h-0 overflow-hidden"
         }`}
       >
         <nav aria-label="ניווט נייד" className="container-custom py-4">
@@ -287,7 +287,7 @@ export default function Header() {
                   </div>
                   <ul
                     className={`overflow-hidden transition-[max-height] duration-300 ${
-                      subOpen ? "max-h-96" : "max-h-0"
+                      subOpen ? "visible max-h-96" : "invisible max-h-0"
                     }`}
                   >
                     {link.children.map((child) => (

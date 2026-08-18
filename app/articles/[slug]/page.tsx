@@ -97,7 +97,7 @@ export default function ArticlePage({ params }: { params: { slug: string } }) {
             </div>
 
             {/* Disclaimer */}
-            <p className="mt-10 rounded-2xl border border-line bg-cream-soft p-5 text-sm leading-relaxed text-ink-muted">
+            <p className="mt-10 rounded-2xl border border-line bg-cream-soft p-5 text-sm leading-relaxed text-ink-soft">
               המידע במאמר זה כללי בלבד ואינו מהווה ייעוץ משפטי או תחליף לו. כל מקרה
               נבחן לגופו, ואין להסתמך על האמור כאן בלי לקבל ייעוץ פרטני המתאים
               לנסיבות שלכם.

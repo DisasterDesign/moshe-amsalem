@@ -41,8 +41,11 @@ export default function GoogleReviewsBadge() {
         <div
           role="dialog"
           aria-label="ביקורות גוגל"
-          style={{ bottom: "calc(10rem + var(--floating-offset, 0px))" }}
-          className="fixed left-5 z-[55] w-[21rem] max-w-[calc(100vw-2.5rem)]
+          style={{
+            bottom: "calc(10rem + var(--floating-offset, 0px))",
+            maxHeight: "calc(100dvh - 12rem - var(--floating-offset, 0px))",
+          }}
+          className="fixed left-5 z-[55] flex w-[21rem] max-w-[calc(100vw-2.5rem)] flex-col
                      overflow-hidden rounded-2xl border border-line bg-white shadow-2xl shadow-dark/25"
         >
           <div className="flex items-center justify-between border-b border-line px-4 py-3">
@@ -72,7 +75,7 @@ export default function GoogleReviewsBadge() {
             </button>
           </div>
 
-          <ul className="max-h-72 space-y-3 overflow-y-auto px-4 py-3">
+          <ul className="min-h-0 flex-1 space-y-3 overflow-y-auto px-4 py-3">
             {reviews.map((r) => (
               <li key={r.id} className="rounded-xl bg-cream-soft p-3">
                 <div className="mb-1.5 flex items-center gap-2">
@@ -82,9 +85,9 @@ export default function GoogleReviewsBadge() {
                     ))}
                   </span>
                   <span className="text-xs font-bold text-ink">{r.author}</span>
-                  <span className="text-[11px] text-ink-muted">{r.relativeTime}</span>
+                  <span className="text-xs text-ink-muted">{r.relativeTime}</span>
                 </div>
-                <p className="line-clamp-4 text-[13px] leading-relaxed text-ink-soft">{r.text}</p>
+                <p className="line-clamp-4 text-sm leading-relaxed text-ink-soft">{r.text}</p>
               </li>
             ))}
           </ul>
@@ -106,7 +109,7 @@ export default function GoogleReviewsBadge() {
         aria-expanded={open}
         aria-label={`דירוג ${rating.toFixed(1)} מתוך 5 בגוגל על סמך ${total} ביקורות. לחצו לפתיחה`}
         style={{ bottom: "calc(5.25rem + var(--floating-offset, 0px))" }}
-        className="fixed left-4 z-[55] flex items-center gap-2 rounded-full
+        className="reviews-badge fixed left-4 z-[55] flex items-center gap-2 rounded-full
                    border border-line bg-white py-2 pl-3 pr-2.5 shadow-xl shadow-dark/15
                    sm:left-5 sm:gap-2.5 sm:py-2.5 sm:pl-4 sm:pr-3
                    transition-all duration-300 hover:-translate-y-0.5 hover:shadow-2xl
@@ -122,7 +125,7 @@ export default function GoogleReviewsBadge() {
               ))}
             </span>
           </span>
-          <span className="hidden text-[10px] text-ink-muted sm:block">{total} ביקורות</span>
+          <span className="hidden text-xs text-ink-muted sm:block">{total} ביקורות</span>
         </span>
       </button>
     </div>

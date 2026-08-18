@@ -95,7 +95,7 @@ export default function HeroLeadForm({
             <h2 id={`${idPrefix}-form-title`} className="font-heading text-lg font-bold text-ink">
               {title}
             </h2>
-            <p className="text-sm text-ink-muted">{subtitle}</p>
+            <p className="text-sm text-ink-soft">{subtitle}</p>
           </div>
 
           <div className="grid gap-3 lg:grid-cols-[1fr_1fr_1fr_auto]">
@@ -171,7 +171,7 @@ export default function HeroLeadForm({
           </div>
 
           {/* Honeypot */}
-          <div aria-hidden="true" className="absolute h-0 w-0 overflow-hidden opacity-0">
+          <div aria-hidden="true" className="honeypot">
             <label htmlFor={`${idPrefix}-company`}>אל תמלאו שדה זה</label>
             <input
               id={`${idPrefix}-company`}

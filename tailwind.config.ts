@@ -40,7 +40,7 @@ const config: Config = {
         ink: {
           DEFAULT: "#153243",
           soft: "#3D5560",
-          muted: "#6C828B",
+          muted: "#5A7079",
         },
         // Logo gold — brand-continuity accent, used sparingly.
         gold: {

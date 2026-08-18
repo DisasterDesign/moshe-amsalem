@@ -18,8 +18,12 @@
   }
 
   /* Visible, consistent keyboard focus everywhere (a11y baseline). */
+  /* Full-strength ring (primary/60 measured 2.5:1). The transparent outline is
+     kept so forced-colors mode still draws a system focus indicator. */
   :focus-visible {
-    @apply outline-none ring-2 ring-primary/60 ring-offset-2 ring-offset-cream rounded-sm;
+    @apply ring-2 ring-primary ring-offset-2 ring-offset-cream rounded-sm;
+    outline: 2px solid transparent;
+    outline-offset: 2px;
   }
 }
 
@@ -66,16 +70,20 @@
     @apply max-w-7xl mx-auto px-4 md:px-8;
   }
 
+  /* Each responsive text-* step ships its own line-height, and inside a media
+     query it outranks an unconditional leading-*. Restate the leading in every
+     branch so multi-line Hebrew headings never collapse onto each other. */
   .heading-xl {
-    @apply font-heading text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight;
+    @apply font-heading font-extrabold text-4xl leading-[1.15]
+           md:text-5xl md:leading-[1.12] lg:text-6xl lg:leading-[1.1];
   }
 
   .heading-lg {
-    @apply font-heading text-3xl md:text-4xl font-bold leading-tight;
+    @apply font-heading font-bold text-3xl leading-[1.2] md:text-4xl md:leading-[1.15];
   }
 
   .heading-md {
-    @apply font-heading text-2xl md:text-3xl font-bold;
+    @apply font-heading font-bold text-2xl leading-[1.25] md:text-3xl md:leading-[1.2];
   }
 
   .text-body {
@@ -117,10 +125,43 @@
     text-wrap: balance;
   }
 
-  /* Marks a value the client still owes us. Visible but clearly provisional. */
+  /* Bot trap. Clipped in place rather than parked off-canvas: a physical
+     `left:-10000px` is the scrollable direction in RTL and added 10,000px of
+     horizontal scroll. Screen readers skip it via aria-hidden on the wrapper. */
+  .honeypot {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* Marks a value the client still owes us. Visible but clearly provisional.
+     inline-block so the padding grows a real line box instead of painting over
+     the neighbouring lines. */
   .pending-value {
-    @apply rounded-md border border-dashed border-gold/70 bg-gold/10 px-2 py-0.5
-           text-base font-medium text-ink-soft;
+    @apply inline-block rounded-md border border-dashed border-gold/70 bg-gold/10
+           px-2 py-0.5 text-base font-medium leading-snug text-ink;
+  }
+  .bg-dark .pending-value {
+    @apply text-light-secondary;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Floating stack. On a phone the cookie banner plus three floats ate a quarter
+   of the first screen and covered the hero CTA. While the banner is up on
+   small screens, the reviews badge (least essential of the three) steps aside.
+   ───────────────────────────────────────────────────────────────────────────*/
+@media (max-width: 639px) {
+  html.cookie-open .reviews-badge {
+    display: none;
   }
 }
 
@@ -132,7 +173,6 @@
   opacity: 0;
   transform: translateY(12px);
   transition: opacity 350ms ease-out, transform 350ms ease-out;
-  will-change: opacity, transform;
 }
 
 .js [data-reveal][data-revealed] {

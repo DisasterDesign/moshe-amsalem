@@ -28,8 +28,8 @@ export default function Timeline() {
           />
 
           {dealTimeline.map((stage, i) => (
-            <li key={stage.title} className="relative md:pr-20">
-              <Reveal index={i} className="block pb-10">
+            <li key={stage.title}>
+              <Reveal index={i} className="relative block pb-10 md:pr-20">
                 {/* Step number */}
                 <span
                   aria-hidden="true"

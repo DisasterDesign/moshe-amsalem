@@ -17,9 +17,8 @@ export default function ServiceCard({
   const Icon = iconFor(slug);
 
   return (
-    <Reveal
-      as="article"
-      index={index}
+    <Reveal as="div" index={index} className="h-full">
+    <article
       className="group relative flex h-full flex-col rounded-2xl border border-line bg-white p-6 shadow-sm
                  transition-all duration-300 ease-out hover:-translate-y-1.5 hover:border-primary/40
                  hover:shadow-xl hover:shadow-primary/10 focus-within:border-primary/40"
@@ -45,6 +44,7 @@ export default function ServiceCard({
         לפרטים נוספים
         <ArrowLeft size={15} aria-hidden="true" />
       </span>
+    </article>
     </Reveal>
   );
 }

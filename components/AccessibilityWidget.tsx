@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Accessibility, RotateCcw, X } from "lucide-react";
 import Link from "next/link";
 
@@ -54,6 +54,7 @@ const TOGGLES: { key: keyof State; label: string }[] = [
 export default function AccessibilityWidget() {
   const [open, setOpen] = useState(false);
   const [state, setState] = useState<State>(DEFAULT);
+  const rootRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     try {
@@ -69,12 +70,23 @@ export default function AccessibilityWidget() {
   }, []);
 
   useEffect(() => {
+    if (!open) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") setOpen(false);
     };
+    // Close on outside click too, so this panel and the reviews panel can never
+    // both be open and stacked on top of each other on a narrow screen.
+    const onClick = (e: MouseEvent) => {
+      if (rootRef.current && !rootRef.current.contains(e.target as Node)) setOpen(false);
+    };
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, []);
+    const id = setTimeout(() => document.addEventListener("mousedown", onClick), 0);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      clearTimeout(id);
+      document.removeEventListener("mousedown", onClick);
+    };
+  }, [open]);
 
   const update = (patch: Partial<State>) => {
     setState((prev) => {
@@ -100,7 +112,7 @@ export default function AccessibilityWidget() {
   };
 
   return (
-    <>
+    <div ref={rootRef} className="contents">
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
@@ -122,8 +134,11 @@ export default function AccessibilityWidget() {
           role="dialog"
           aria-label="הגדרות נגישות"
           aria-modal="false"
-          style={{ bottom: "calc(5rem + var(--floating-offset, 0px))" }}
-          className="fixed right-5 z-[60] w-[19rem] max-w-[calc(100vw-2.5rem)]
+          style={{
+            bottom: "calc(5rem + var(--floating-offset, 0px))",
+            maxHeight: "calc(100dvh - 7rem - var(--floating-offset, 0px))",
+          }}
+          className="fixed right-5 z-[60] w-[19rem] max-w-[calc(100vw-2.5rem)] overflow-y-auto
                      rounded-2xl border border-line bg-white p-5 shadow-2xl shadow-dark/25"
         >
           <div className="mb-4 flex items-center justify-between">
@@ -187,7 +202,7 @@ export default function AccessibilityWidget() {
                   >
                     <span
                       className={`absolute top-0.5 h-4 w-4 rounded-full bg-white shadow transition-all ${
-                        active ? "right-0.5" : "right-[1.125rem]"
+                        active ? "start-[1.125rem]" : "start-0.5"
                       }`}
                     />
                   </span>
@@ -214,6 +229,6 @@ export default function AccessibilityWidget() {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 }

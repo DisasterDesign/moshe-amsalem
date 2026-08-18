@@ -192,7 +192,7 @@ export default function ContactForm({ source = "טופס יצירת קשר" }: {
       </div>
 
       {/* Honeypot - hidden from users and assistive tech, visible to naive bots. */}
-      <div aria-hidden="true" className="absolute h-0 w-0 overflow-hidden opacity-0">
+      <div aria-hidden="true" className="honeypot">
         <label htmlFor="contact-company">אל תמלאו שדה זה</label>
         <input
           type="text"

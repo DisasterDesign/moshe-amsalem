@@ -43,10 +43,13 @@ export const siteConfig = {
  * Placeholders the client still has to supply. Rendered visibly on the site as
  * `[... - לקבל ממשה]` so nothing fake ever ships, per the brief.
  */
+export const STATS = {
+  /** Supplied by the client, August 2026. */
+  dealsClosed: 60,
+  dealsValueMillions: 100,
+} as const;
+
 export const PENDING = {
-  dealsClosed: "[מספר - לקבל ממשה]",
-  dealsValueMillions: "[מספר - לקבל ממשה]",
-  urbanRenewalProjects: "[מספר - לקבל ממשה]",
   yearsExperience: "[מספר - לקבל ממשה]",
   accessibilityCoordinator: "[שם ופרטי רכז נגישות - לקבל ממשה]",
   privacyEmail: "[דוא״ל לפניות פרטיות - לקבל ממשה]",

@@ -7,7 +7,7 @@ const CATEGORY_TONE: Record<string, string> = {
   "מיסוי מקרקעין": "from-[#327B87] to-[#1F5563]",
   "התחדשות עירונית": "from-[#2A6072] to-[#153243]",
   "צוואות וירושות": "from-[#3D5560] to-[#153243]",
-  "משפחה": "from-[#C9985E] to-[#8A6437]",
+  "משפחה": "from-[#8A6437] to-[#5C4224]",
 };
 
 function formatDate(iso: string) {
@@ -33,7 +33,7 @@ export default function ArticleCard({ article }: { article: Article }) {
         <span className={`absolute inset-0 bg-gradient-to-bl ${tone}`} />
         <span className="absolute inset-x-0 top-0 h-24 bg-white/10 blur-2xl" />
         <span className="absolute inset-0 flex items-center justify-center p-6 text-center">
-          <span className="font-heading text-lg font-bold leading-snug text-white/90">
+          <span className="font-heading text-lg font-bold leading-snug text-white">
             {article.title}
           </span>
         </span>

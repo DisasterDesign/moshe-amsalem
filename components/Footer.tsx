@@ -177,7 +177,7 @@ export default function Footer() {
               href="https://www.fuzionwebz.com/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs text-light-tertiary opacity-50 transition-opacity duration-300 hover:opacity-90"
+              className="text-xs text-light-tertiary transition-colors duration-300 hover:text-white"
             >
               Built by Fuzion
             </a>

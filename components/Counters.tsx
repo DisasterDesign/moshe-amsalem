@@ -1,17 +1,16 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Building2, FileSignature, Star, Wallet } from "lucide-react";
+import { FileSignature, Star, Wallet } from "lucide-react";
 import { useGoogleReviews } from "@/lib/reviews";
-import { PENDING } from "@/config/site";
+import { STATS } from "@/config/site";
 
 /**
  * Stat strip under the hero.
  *
- * Only the Google rating is a real number today - it comes from the live
- * reviews endpoint. The transaction counts are still with the client, so they
- * render as visible `[מספר - לקבל ממשה]` chips rather than invented figures.
- * Fill them in at `PENDING` in config/site.ts and they start counting up.
+ * Deal counts come from `STATS` in config/site.ts (client-supplied); the Google
+ * rating is live from the reviews endpoint. A `null` value renders as a visible
+ * pending chip instead of an invented figure.
  */
 
 type Stat = {
@@ -114,14 +113,15 @@ export default function Counters() {
   const stats: Stat[] = [
     {
       icon: FileSignature,
-      value: null,
-      pending: PENDING.dealsClosed,
-      label: "עסקאות שלוויתי",
+      value: STATS.dealsClosed,
+      pending: "",
+      suffix: "+",
+      label: "עסקאות שליוויתי",
     },
     {
       icon: Wallet,
-      value: null,
-      pending: PENDING.dealsValueMillions,
+      value: STATS.dealsValueMillions,
+      pending: "",
       label: "מיליון ₪ שווי עסקאות מצטבר",
     },
     {
@@ -131,18 +131,12 @@ export default function Counters() {
       decimals: 1,
       label: `דירוג גוגל · ${total} ביקורות`,
     },
-    {
-      icon: Building2,
-      value: null,
-      pending: PENDING.urbanRenewalProjects,
-      label: "פרויקטי התחדשות עירונית",
-    },
   ];
 
   return (
     <section ref={ref} className="bg-dark" aria-label="נתוני המשרד">
       <div className="container-custom">
-        <div className="grid grid-cols-2 divide-x divide-x-reverse divide-white/10 lg:grid-cols-4">
+        <div className="grid grid-cols-1 sm:grid-cols-3 sm:divide-x sm:divide-x-reverse sm:divide-white/10">
           {stats.map((s) => (
             <StatTile key={s.label} stat={s} active={active} />
           ))}

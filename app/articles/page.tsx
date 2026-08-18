@@ -1,7 +1,6 @@
 import ArticleCard from "@/components/ArticleCard";
 import CTASection from "@/components/CTASection";
 import HomeContact from "@/components/HomeContact";
-import LeadMagnet from "@/components/LeadMagnet";
 import PageHero from "@/components/PageHero";
 import Reveal from "@/components/Reveal";
 import { BreadcrumbsJsonLd } from "@/components/JsonLd";
@@ -39,7 +38,6 @@ export default function ArticlesPage() {
         </div>
       </section>
 
-      <LeadMagnet />
       <CTASection />
       <HomeContact source="טופס עמוד מאמרים" />
 

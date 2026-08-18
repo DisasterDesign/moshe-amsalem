@@ -7,7 +7,6 @@ import FAQAccordion from "@/components/FAQAccordion";
 import GoogleReviews from "@/components/GoogleReviews";
 import Hero from "@/components/Hero";
 import HomeContact from "@/components/HomeContact";
-import LeadMagnet from "@/components/LeadMagnet";
 import MidPageCta from "@/components/MidPageCta";
 import Process from "@/components/Process";
 import Reveal from "@/components/Reveal";
@@ -40,7 +39,6 @@ export default function Home() {
       <Process />
       <TestimonialsWhatsApp />
       <GoogleReviews />
-      <LeadMagnet />
 
       {/* FAQ */}
       <section className="section-padding bg-cream">

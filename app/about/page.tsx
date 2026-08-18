@@ -224,7 +224,7 @@ export default function AboutPage() {
                     {siteConfig.address.street}, {siteConfig.address.city}
                   </p>
                   <p className="text-lg text-ink-soft">{siteConfig.address.detail}</p>
-                  <p className="mt-2 text-ink-muted">{siteConfig.hours}</p>
+                  <p className="mt-2 text-ink-soft">{siteConfig.hours}</p>
                 </div>
               </div>
 
