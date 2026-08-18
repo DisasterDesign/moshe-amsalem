@@ -1,39 +1,50 @@
-"use client";
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
+import Reveal from "./Reveal";
+import { iconFor } from "./practiceIcons";
 
-import { motion } from "framer-motion";
-import { LucideIcon } from "lucide-react";
-
-interface ServiceCardProps {
-  icon: LucideIcon;
+export default function ServiceCard({
+  slug,
+  title,
+  description,
+  index,
+}: {
+  slug: string;
   title: string;
   description: string;
   index: number;
-}
+}) {
+  const Icon = iconFor(slug);
 
-export default function ServiceCard({ icon: Icon, title, description, index }: ServiceCardProps) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.5, delay: index * 0.08 }}
-      className="group rounded-2xl bg-white border border-line p-6 shadow-sm
-                 hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-1.5
-                 hover:border-primary/40 transition-all duration-300 ease-out"
+    <Reveal
+      as="article"
+      index={index}
+      className="group relative flex h-full flex-col rounded-2xl border border-line bg-white p-6 shadow-sm
+                 transition-all duration-300 ease-out hover:-translate-y-1.5 hover:border-primary/40
+                 hover:shadow-xl hover:shadow-primary/10 focus-within:border-primary/40"
     >
-      {/* Icon */}
-      <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-5
-                      group-hover:bg-primary group-hover:scale-105 transition-all duration-300 ease-out">
-        <Icon className="w-7 h-7 text-primary group-hover:text-white transition-colors duration-300" />
+      <div
+        className="mb-5 flex h-14 w-14 items-center justify-center rounded-xl bg-primary/10
+                   transition-all duration-300 ease-out group-hover:scale-105 group-hover:bg-primary"
+        aria-hidden="true"
+      >
+        <Icon className="h-7 w-7 text-primary transition-colors duration-300 group-hover:text-white" />
       </div>
 
-      {/* Title */}
-      <h3 className="font-heading text-xl font-bold text-ink mb-3 group-hover:text-primary transition-colors duration-300">
-        {title}
+      <h3 className="mb-3 font-heading text-xl font-bold text-ink transition-colors duration-300 group-hover:text-primary">
+        <Link href={`/services/${slug}`}>
+          {title}
+          <span className="absolute inset-0" aria-hidden="true" />
+        </Link>
       </h3>
 
-      {/* Description */}
-      <p className="text-ink-soft leading-relaxed">{description}</p>
-    </motion.div>
+      <p className="mb-5 flex-1 leading-relaxed text-ink-soft">{description}</p>
+
+      <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary">
+        לפרטים נוספים
+        <ArrowLeft size={15} aria-hidden="true" />
+      </span>
+    </Reveal>
   );
 }

@@ -1,8 +1,5 @@
 import { MessageCircle } from "lucide-react";
-
-const WHATSAPP_NUMBER = "972524337633";
-const PREFILL = "היי משה, הגעתי אליך דרך האתר ואשמח לקבל פרטים נוספים";
-const WA_LINK = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(PREFILL)}`;
+import { siteConfig, waLink, WA_MESSAGES } from "@/config/site";
 
 function WhatsappIcon({ className = "" }: { className?: string }) {
   return (
@@ -15,26 +12,28 @@ function WhatsappIcon({ className = "" }: { className?: string }) {
 export default function FloatingWhatsApp() {
   return (
     <a
-      href={WA_LINK}
+      href={waLink(WA_MESSAGES.general)}
       target="_blank"
       rel="noopener noreferrer"
-      aria-label="דברו איתנו בוואטסאפ"
-      className="group fixed bottom-5 left-5 z-50 flex items-center gap-2.5 rounded-full
-                 bg-dark px-5 py-3.5 font-semibold text-white shadow-xl shadow-dark/25
+      aria-label={`שליחת הודעת וואטסאפ אל ${siteConfig.name}`}
+      style={{ bottom: "calc(1.25rem + var(--floating-offset, 0px))" }}
+      className="group fixed left-4 z-50 flex h-14 w-14 items-center justify-center rounded-full
+                 bg-dark font-semibold text-white shadow-xl shadow-dark/25
+                 sm:left-5 sm:h-auto sm:w-auto sm:gap-2.5 sm:px-5 sm:py-3.5
                  transition-all duration-300 ease-out hover:bg-whatsapp hover:-translate-y-0.5
                  hover:shadow-lg hover:shadow-whatsapp/40 focus:outline-none focus:ring-2
                  focus:ring-whatsapp/50 focus:ring-offset-2"
     >
       {/* Default state */}
       <span className="flex items-center gap-2.5 group-hover:hidden">
-        <MessageCircle size={20} />
-        <span>דברו איתנו</span>
+        <MessageCircle size={22} aria-hidden="true" />
+        <span className="hidden sm:inline">דברו איתנו</span>
       </span>
 
-      {/* Hover state → WhatsApp */}
+      {/* Hover state -> WhatsApp */}
       <span className="hidden items-center gap-2.5 group-hover:flex">
         <WhatsappIcon className="h-5 w-5" />
-        <span>וואטסאפ</span>
+        <span className="hidden sm:inline">וואטסאפ</span>
       </span>
     </a>
   );

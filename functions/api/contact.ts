@@ -37,16 +37,36 @@ export async function onRequestPost(context) {
   try {
     const body = await context.request.json();
 
-    if (!body.name || !body.phone || !body.email) {
+    // Honeypot. Real users never see this field, so anything in it is a bot.
+    // Answer 200 so the bot has no signal that it was filtered.
+    if (body.company) {
+      return new Response(JSON.stringify({ success: true }), {
+        status: 200,
+        headers: jsonHeaders,
+      });
+    }
+
+    // The quick hero form only collects name + phone, so email is optional here
+    // and validated only when supplied.
+    if (!body.name || !body.phone) {
       return new Response(
-        JSON.stringify({ error: "שם, טלפון ומייל הם שדות חובה" }),
+        JSON.stringify({ error: "שם וטלפון הם שדות חובה" }),
         { status: 400, headers: jsonHeaders }
       );
     }
 
-    if (!EMAIL_RE.test(String(body.email))) {
+    if (body.email && !EMAIL_RE.test(String(body.email))) {
       return new Response(
         JSON.stringify({ error: "כתובת מייל לא תקינה" }),
+        { status: 400, headers: jsonHeaders }
+      );
+    }
+
+    // Privacy consent is a hard requirement on every form (Protection of Privacy
+    // Law). Record it and reject the submission without it.
+    if (body.consent !== true) {
+      return new Response(
+        JSON.stringify({ error: "נדרש אישור מדיניות הפרטיות" }),
         { status: 400, headers: jsonHeaders }
       );
     }
@@ -88,7 +108,15 @@ export async function onRequestPost(context) {
     const phone = escapeHtml(body.phone);
     const email = escapeHtml(body.email);
     const subject = escapeHtml(body.subject);
+    const source = escapeHtml(body.source || "טופס יצירת קשר");
     const message = escapeHtml(body.message).replace(/\n/g, "<br>");
+    const submittedAt = new Date().toLocaleString("he-IL", { timeZone: "Asia/Jerusalem" });
+
+    const row = (label: string, value: string) => `
+      <tr>
+        <td style="padding: 12px; border-bottom: 1px solid #E4E8E7; font-weight: bold; color: #153243; width: 130px;">${label}</td>
+        <td style="padding: 12px; border-bottom: 1px solid #E4E8E7; color: #3D5560;">${value}</td>
+      </tr>`;
 
     const res = await fetch("https://api.resend.com/emails", {
       method: "POST",
@@ -99,41 +127,33 @@ export async function onRequestPost(context) {
       body: JSON.stringify({
         from: "אתר עו״ד משה אמסלם <noreply@ams-law.com>",
         to: "moshe@ams-law.com",
-        reply_to: body.email,
+        ...(body.email ? { reply_to: body.email } : {}),
         subject: `פנייה חדשה מהאתר${body.subject ? ` - ${body.subject}` : ""}`,
         html: `
-          <div dir="rtl" style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #f9f9f9; border-radius: 12px; overflow: hidden;">
-            <div style="background: #0A0A0A; padding: 24px; text-align: center;">
-              <h1 style="color: #C9A962; margin: 0; font-size: 24px;">פנייה חדשה מהאתר</h1>
+          <div dir="rtl" style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #FBFAF7; border-radius: 12px; overflow: hidden;">
+            <div style="background: #153243; padding: 24px; text-align: center;">
+              <h1 style="color: #C9985E; margin: 0; font-size: 24px;">פנייה חדשה מהאתר</h1>
             </div>
             <div style="padding: 24px;">
               <table style="width: 100%; border-collapse: collapse;">
-                <tr>
-                  <td style="padding: 12px; border-bottom: 1px solid #eee; font-weight: bold; color: #333; width: 120px;">שם:</td>
-                  <td style="padding: 12px; border-bottom: 1px solid #eee; color: #555;">${name}</td>
-                </tr>
-                <tr>
-                  <td style="padding: 12px; border-bottom: 1px solid #eee; font-weight: bold; color: #333;">טלפון:</td>
-                  <td style="padding: 12px; border-bottom: 1px solid #eee; color: #555;"><a href="tel:${phone}" style="color: #C9A962;">${phone}</a></td>
-                </tr>
-                <tr>
-                  <td style="padding: 12px; border-bottom: 1px solid #eee; font-weight: bold; color: #333;">מייל:</td>
-                  <td style="padding: 12px; border-bottom: 1px solid #eee; color: #555;"><a href="mailto:${email}" style="color: #C9A962;">${email}</a></td>
-                </tr>
-                ${body.subject ? `
-                <tr>
-                  <td style="padding: 12px; border-bottom: 1px solid #eee; font-weight: bold; color: #333;">נושא:</td>
-                  <td style="padding: 12px; border-bottom: 1px solid #eee; color: #555;">${subject}</td>
-                </tr>` : ""}
+                ${row("שם", name)}
+                ${row("טלפון", `<a href="tel:${phone}" style="color: #27717F;">${phone}</a>`)}
+                ${body.email ? row("מייל", `<a href="mailto:${email}" style="color: #27717F;">${email}</a>`) : ""}
+                ${body.subject ? row("נושא", subject) : ""}
+                ${row("מקור", source)}
+                ${row("התקבל", escapeHtml(submittedAt))}
               </table>
               ${body.message ? `
-              <div style="margin-top: 20px; padding: 16px; background: #fff; border-radius: 8px; border: 1px solid #eee;">
-                <strong style="color: #333;">הודעה:</strong>
-                <p style="color: #555; line-height: 1.6; margin: 8px 0 0;">${message}</p>
+              <div style="margin-top: 20px; padding: 16px; background: #fff; border-radius: 8px; border: 1px solid #E4E8E7;">
+                <strong style="color: #153243;">הודעה:</strong>
+                <p style="color: #3D5560; line-height: 1.6; margin: 8px 0 0;">${message}</p>
               </div>` : ""}
+              <p style="margin: 20px 0 0; font-size: 12px; color: #6C828B;">
+                הפונה אישר את מדיניות הפרטיות בעת השליחה.
+              </p>
             </div>
-            <div style="background: #0A0A0A; padding: 16px; text-align: center;">
-              <p style="color: #888; margin: 0; font-size: 12px;">הודעה זו נשלחה מטופס יצירת הקשר באתר עו״ד משה אמסלם</p>
+            <div style="background: #153243; padding: 16px; text-align: center;">
+              <p style="color: #9DB4BA; margin: 0; font-size: 12px;">הודעה זו נשלחה מטופס יצירת הקשר באתר עו״ד משה אמסלם</p>
             </div>
           </div>
         `,

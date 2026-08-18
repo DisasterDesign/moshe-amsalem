@@ -1,130 +1,47 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { motion } from "framer-motion";
 import { Star } from "lucide-react";
+import GoogleGlyph from "./GoogleGlyph";
+import Reveal from "./Reveal";
+import { useGoogleReviews } from "@/lib/reviews";
 
 /**
- * Live Google reviews - same architecture as fuzionwebz.com:
- * the browser calls /api/reviews (Cloudflare Pages Function -> Google Places API,
- * cached 24h) and renders rating + total count + the returned review texts.
- *
- * Google's API returns at most ~5 review bodies, so the total count is shown
- * separately from the number of quotes on screen.
- *
- * Until GOOGLE_PLACES_API_KEY is set on the Pages project the component renders
- * the bundled snapshot below, so the section is never empty or wrong.
- * Snapshot: July 2026, 5.0, 5 reviews.
+ * Live Google reviews carousel. Data comes from `useGoogleReviews`, which is
+ * shared with the floating badge so the page fetches once and falls back to a
+ * bundled snapshot when the endpoint is unavailable.
  */
 
-type Review = {
-  id: string;
-  author: string;
-  authorPhoto?: string;
-  authorUri?: string;
-  rating: number;
-  text: string;
-  relativeTime: string;
-  reviewUri?: string;
-};
-
-const FALLBACK_RATING = 5.0;
-const FALLBACK_TOTAL = 5;
-
-const FALLBACK_REVIEWS: Review[] = [
-  {
-    id: "shalo",
-    author: "שלו אלימלך",
-    rating: 5,
-    relativeTime: "לפני 3 חודשים",
-    text: "אני רוצה להמליץ בחום על עורך הדין משה אמסלם. קיבלתי ממנו שירות מקצועי, יסודי ואמין לאורך כל הדרך. הוא היה זמין לכל שאלה, הסביר כל שלב בצורה ברורה ונתן לי תחושת ביטחון מלאה בתהליך.",
-  },
-  {
-    id: "efrat",
-    author: "Efrat Shoshana",
-    rating: 5,
-    relativeTime: "לפני חודשיים",
-    text: "זכות גדולה לעבוד עם עורך דין משה אמסלם. עברנו יחד כמה עסקאות והוא תמיד היה שם בשבילי – זמין, קשוב ומנוסה מאוד. הוא הופך כל תהליך מורכב לפשוט ורגוע בזכות האדיבות והאכפתיות שלו. מי שמחפש ליווי צמוד ומקצועי, זה הכתובת. תודה על הכל!",
-  },
-  {
-    id: "miki",
-    author: "miki hai",
-    rating: 5,
-    relativeTime: "לפני 3 ימים",
-    text: "מושיקו ליווה אותי בעסקת רכישה של דירה, מקצועי מאוד, מענה בכל שעות היום. בזכות מושיקו קבלתי חיים חדשים מעבר לעזרה במכירת דירה.",
-  },
-  {
-    id: "neve",
-    author: "נווה לוצקי",
-    rating: 5,
-    relativeTime: "לפני חודשיים",
-    text: "מושיקו ליווה אותי בעסקת רכישה של דירה, מקצועי מאוד, זמין ונעים. ממליץ בחום!",
-  },
-  {
-    id: "yossi",
-    author: "Yossi Parienti",
-    rating: 5,
-    relativeTime: "לפני 4 חודשים",
-    text: "היה לי איתו כמה וכמה עבודות עורך דין נאמן מאוד יסודי מאוד בקיצור מומלץ",
-  },
-];
-
-const PROFILE_URL = "https://maps.app.goo.gl/T2Azt3EGu4W1iXd49";
-// Opens Google's "write a review" dialog straight from the office listing.
-const WRITE_REVIEW_URL =
-  "https://www.google.com/maps/place//data=!4m3!3m2!1s0xac559dd818e0d573:0xfd1367a8b9dff4b1!12e1";
-
-function initialOf(name: string) {
-  return (name.trim()[0] || "?").toUpperCase();
-}
-
-function Stars({ size = 16 }: { size?: number }) {
+function Stars({ size = 16, count = 5 }: { size?: number; count?: number }) {
   return (
     <span className="flex justify-center gap-0.5 text-gold" aria-hidden="true">
-      {[...Array(5)].map((_, i) => (
+      {[...Array(count)].map((_, i) => (
         <Star key={i} size={size} className="fill-current" />
       ))}
     </span>
   );
 }
 
+function initialOf(name: string) {
+  return (name.trim()[0] || "?").toUpperCase();
+}
+
 export default function GoogleReviews() {
-  const [rating, setRating] = useState<number>(FALLBACK_RATING);
-  const [total, setTotal] = useState<number>(FALLBACK_TOTAL);
-  const [reviews, setReviews] = useState<Review[]>(FALLBACK_REVIEWS);
-  const [profileUrl, setProfileUrl] = useState<string>(PROFILE_URL);
-  const [writeUrl, setWriteUrl] = useState<string>(WRITE_REVIEW_URL);
+  const { rating, total, reviews, profileUrl, writeUrl } = useGoogleReviews();
 
   const scrollerRef = useRef<HTMLDivElement | null>(null);
   const [page, setPage] = useState(0);
   const [pageCount, setPageCount] = useState(1);
 
-  useEffect(() => {
-    let cancelled = false;
-    fetch("/api/reviews")
-      .then((r) => (r.ok ? r.json() : null))
-      .then((data) => {
-        if (cancelled || !data || !data.ok) return;
-        if (Array.isArray(data.reviews) && data.reviews.length > 0) setReviews(data.reviews);
-        if (typeof data.rating === "number") setRating(data.rating);
-        if (typeof data.total === "number") setTotal(data.total);
-        if (data.profileUrl) setProfileUrl(data.profileUrl);
-        if (data.writeReviewUrl) setWriteUrl(data.writeReviewUrl);
-      })
-      .catch(() => {
-        /* keep the bundled snapshot */
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
   const recalc = useCallback(() => {
     const el = scrollerRef.current;
-    if (!el) return;
-    const pages = Math.max(1, Math.round(el.scrollWidth / el.clientWidth));
+    // clientWidth is 0 before the first layout pass. Dividing by it yields
+    // Infinity, and Array(Infinity) throws RangeError - which used to take the
+    // whole page down.
+    if (!el || el.clientWidth === 0) return;
+    const pages = Math.min(20, Math.max(1, Math.round(el.scrollWidth / el.clientWidth)));
     setPageCount(pages);
-    setPage(Math.round(Math.abs(el.scrollLeft) / el.clientWidth));
+    setPage(Math.min(pages - 1, Math.round(Math.abs(el.scrollLeft) / el.clientWidth)));
   }, []);
 
   useEffect(() => {
@@ -141,32 +58,24 @@ export default function GoogleReviews() {
   };
 
   return (
-    <section className="section-padding bg-cream-soft overflow-hidden">
+    <section className="section-padding overflow-hidden bg-cream">
       <div className="container-custom">
-        {/* Heading + rating */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="mb-10 text-center"
-        >
+        <Reveal className="mb-10 text-center">
           <h2 className="heading-lg text-ink">
             לקוחות <span className="text-primary">ממליצים</span>
           </h2>
 
           <div className="mt-5 flex items-center justify-center gap-4">
+            <GoogleGlyph className="h-8 w-8" />
             <span className="font-heading text-4xl font-extrabold text-ink">
               {rating.toFixed(1)}
             </span>
             <span className="text-right">
               <Stars size={18} />
-              <span className="mt-1 block text-sm text-ink-muted">
-                {total} ביקורות בגוגל
-              </span>
+              <span className="mt-1 block text-sm text-ink-muted">{total} ביקורות בגוגל</span>
             </span>
           </div>
-        </motion.div>
+        </Reveal>
 
         {/* Carousel */}
         <div
@@ -179,11 +88,9 @@ export default function GoogleReviews() {
               key={r.id}
               className="flex w-[85%] flex-none snap-start flex-col rounded-2xl border border-line bg-white p-6 text-center shadow-sm sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]"
             >
-              <Stars />
+              <Stars count={Math.round(r.rating)} />
 
-              <p className="mt-4 flex-1 text-ink-soft leading-relaxed">
-                &ldquo;{r.text}&rdquo;
-              </p>
+              <p className="mt-4 flex-1 leading-relaxed text-ink-soft">&ldquo;{r.text}&rdquo;</p>
 
               <div className="mt-6 flex items-center justify-center gap-3">
                 {r.authorPhoto ? (
@@ -245,7 +152,7 @@ export default function GoogleReviews() {
             rel="noopener noreferrer"
             className="btn-primary w-full text-center sm:w-auto"
           >
-            עבדנו יחד? כתבו לנו ביקורת
+            עבדנו יחד? כתבו לי ביקורת
           </a>
           <a
             href={profileUrl}

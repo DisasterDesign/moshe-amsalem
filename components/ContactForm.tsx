@@ -1,9 +1,10 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { motion } from "framer-motion";
-import { Send, CheckCircle, Loader2, AlertCircle } from "lucide-react";
-import { Turnstile, TurnstileInstance } from "@marsidev/react-turnstile";
+import { AlertCircle, CheckCircle, Loader2, Send } from "lucide-react";
+import type { TurnstileInstance } from "@marsidev/react-turnstile";
+import ConsentCheckbox from "./ConsentCheckbox";
+import TurnstileField, { TURNSTILE_ENABLED } from "./TurnstileField";
 
 const subjects = [
   "עסקת מקרקעין",
@@ -15,15 +16,11 @@ const subjects = [
   "אחר",
 ];
 
-const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || "";
-// When no site key is configured the widget never renders, so the form must not
-// wait for a token it will never get - otherwise submit stays disabled forever.
-const TURNSTILE_ENABLED = TURNSTILE_SITE_KEY.length > 0;
-
-export default function ContactForm() {
+export default function ContactForm({ source = "טופס יצירת קשר" }: { source?: string }) {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [consent, setConsent] = useState(false);
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
   const turnstileRef = useRef<TurnstileInstance | null>(null);
   const [formData, setFormData] = useState({
@@ -32,11 +29,18 @@ export default function ContactForm() {
     email: "",
     subject: "",
     message: "",
+    // Honeypot. Bots fill every field they find; humans never see this one.
+    company: "",
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+
+    if (!consent) {
+      setError("יש לאשר את מדיניות הפרטיות כדי לשלוח את הטופס");
+      return;
+    }
 
     if (TURNSTILE_ENABLED && !turnstileToken) {
       setError("אנא המתן לסיום אימות האבטחה");
@@ -49,7 +53,7 @@ export default function ContactForm() {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...formData, turnstileToken }),
+        body: JSON.stringify({ ...formData, consent, source, turnstileToken }),
       });
 
       if (!res.ok) {
@@ -60,7 +64,8 @@ export default function ContactForm() {
       setIsSubmitted(true);
       setTimeout(() => {
         setIsSubmitted(false);
-        setFormData({ name: "", phone: "", email: "", subject: "", message: "" });
+        setFormData({ name: "", phone: "", email: "", subject: "", message: "", company: "" });
+        setConsent(false);
         setTurnstileToken(null);
         turnstileRef.current?.reset();
       }, 4000);
@@ -81,31 +86,25 @@ export default function ContactForm() {
 
   if (isSubmitted) {
     return (
-      <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        className="bg-white border border-line rounded-2xl p-8 text-center shadow-sm"
+      <div
+        role="status"
+        className="rounded-2xl border border-line bg-white p-8 text-center shadow-sm"
       >
-        <CheckCircle className="w-16 h-16 text-primary mx-auto mb-4" />
-        <h3 className="font-heading text-xl font-bold text-ink mb-2">הטופס נשלח בהצלחה!</h3>
+        <CheckCircle className="mx-auto mb-4 h-16 w-16 text-primary" aria-hidden="true" />
+        <h3 className="mb-2 font-heading text-xl font-bold text-ink">הטופס נשלח בהצלחה</h3>
         <p className="text-ink-soft">ניצור איתך קשר בהקדם.</p>
-      </motion.div>
+      </div>
     );
   }
 
   return (
-    <motion.form
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5 }}
+    <form
       onSubmit={handleSubmit}
-      className="bg-white border border-line rounded-2xl p-6 md:p-8 shadow-sm"
+      className="rounded-2xl border border-line bg-white p-6 shadow-sm md:p-8"
     >
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Name */}
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         <div>
-          <label htmlFor="name" className="block text-ink font-medium mb-2">
+          <label htmlFor="name" className="mb-2 block font-medium text-ink">
             שם מלא <span className="text-primary">*</span>
           </label>
           <input
@@ -115,14 +114,14 @@ export default function ContactForm() {
             value={formData.name}
             onChange={handleChange}
             required
+            autoComplete="name"
             className="input-field"
             placeholder="הכנס שם מלא"
           />
         </div>
 
-        {/* Phone */}
         <div>
-          <label htmlFor="phone" className="block text-ink font-medium mb-2">
+          <label htmlFor="phone" className="mb-2 block font-medium text-ink">
             טלפון <span className="text-primary">*</span>
           </label>
           <input
@@ -132,14 +131,15 @@ export default function ContactForm() {
             value={formData.phone}
             onChange={handleChange}
             required
+            autoComplete="tel"
+            inputMode="tel"
             className="input-field"
-            placeholder="050-XXX-XXXX"
+            placeholder="050-000-0000"
           />
         </div>
 
-        {/* Email */}
         <div>
-          <label htmlFor="email" className="block text-ink font-medium mb-2">
+          <label htmlFor="email" className="mb-2 block font-medium text-ink">
             דוא״ל <span className="text-primary">*</span>
           </label>
           <input
@@ -149,14 +149,14 @@ export default function ContactForm() {
             value={formData.email}
             onChange={handleChange}
             required
+            autoComplete="email"
             className="input-field"
             placeholder="example@email.com"
           />
         </div>
 
-        {/* Subject */}
         <div>
-          <label htmlFor="subject" className="block text-ink font-medium mb-2">
+          <label htmlFor="subject" className="mb-2 block font-medium text-ink">
             נושא הפנייה
           </label>
           <select
@@ -176,9 +176,8 @@ export default function ContactForm() {
         </div>
       </div>
 
-      {/* Message */}
       <div className="mt-6">
-        <label htmlFor="message" className="block text-ink font-medium mb-2">
+        <label htmlFor="message" className="mb-2 block font-medium text-ink">
           תוכן ההודעה
         </label>
         <textarea
@@ -188,50 +187,59 @@ export default function ContactForm() {
           onChange={handleChange}
           rows={5}
           className="input-field resize-none"
-          placeholder="ספר/י לנו על הפנייה שלך..."
+          placeholder="ספרו לי על הפנייה שלכם..."
         />
       </div>
 
-      {/* Turnstile */}
-      {TURNSTILE_SITE_KEY && (
-        <div className="mt-6 flex justify-center" dir="ltr">
-          <Turnstile
-            ref={turnstileRef}
-            siteKey={TURNSTILE_SITE_KEY}
-            options={{ language: "he", theme: "light" }}
-            onSuccess={(token) => setTurnstileToken(token)}
-            onError={() => setTurnstileToken(null)}
-            onExpire={() => setTurnstileToken(null)}
-          />
-        </div>
-      )}
+      {/* Honeypot - hidden from users and assistive tech, visible to naive bots. */}
+      <div aria-hidden="true" className="absolute h-0 w-0 overflow-hidden opacity-0">
+        <label htmlFor="contact-company">אל תמלאו שדה זה</label>
+        <input
+          type="text"
+          id="contact-company"
+          name="company"
+          value={formData.company}
+          onChange={handleChange}
+          tabIndex={-1}
+          autoComplete="off"
+        />
+      </div>
 
-      {/* Error */}
+      <div className="mt-6">
+        <ConsentCheckbox id="contact-consent" checked={consent} onChange={setConsent} />
+      </div>
+
+      <div className="mt-6">
+        <TurnstileField ref={turnstileRef} onToken={setTurnstileToken} />
+      </div>
+
       {error && (
-        <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center gap-3">
-          <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0" />
-          <p className="text-red-600 text-sm">{error}</p>
+        <div
+          role="alert"
+          className="mt-4 flex items-center gap-3 rounded-lg border border-red-200 bg-red-50 p-4"
+        >
+          <AlertCircle className="h-5 w-5 flex-shrink-0 text-red-500" aria-hidden="true" />
+          <p className="text-sm text-red-600">{error}</p>
         </div>
       )}
 
-      {/* Submit */}
       <button
         type="submit"
-        disabled={isLoading || (TURNSTILE_ENABLED && !turnstileToken)}
-        className="btn-primary w-full mt-6 flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
+        disabled={isLoading}
+        className="btn-primary mt-6 flex w-full items-center justify-center gap-2 disabled:cursor-not-allowed disabled:opacity-60"
       >
         {isLoading ? (
           <>
-            <Loader2 size={18} className="animate-spin" />
+            <Loader2 size={18} className="animate-spin" aria-hidden="true" />
             <span>שולח...</span>
           </>
         ) : (
           <>
             <span>שליחה</span>
-            <Send size={18} />
+            <Send size={18} aria-hidden="true" />
           </>
         )}
       </button>
-    </motion.form>
+    </form>
   );
 }

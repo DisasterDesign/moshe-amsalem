@@ -5,6 +5,8 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    /* Sticky header height, so in-page anchors don't land under it. */
+    scroll-padding-top: 6rem;
   }
 
   body {
@@ -13,6 +15,11 @@
 
   ::selection {
     @apply bg-primary/20 text-ink;
+  }
+
+  /* Visible, consistent keyboard focus everywhere (a11y baseline). */
+  :focus-visible {
+    @apply outline-none ring-2 ring-primary/60 ring-offset-2 ring-offset-cream rounded-sm;
   }
 }
 
@@ -32,6 +39,14 @@
            hover:bg-primary hover:text-white hover:-translate-y-0.5
            active:translate-y-0 active:scale-[0.98]
            focus:outline-none focus:ring-2 focus:ring-primary/40 focus:ring-offset-2 focus:ring-offset-cream;
+  }
+
+  .btn-gold {
+    @apply bg-gold text-dark font-semibold px-6 py-3 rounded-lg
+           transition-all duration-300 ease-out
+           hover:bg-gold-light hover:-translate-y-0.5 hover:shadow-lg hover:shadow-gold/25
+           active:translate-y-0 active:scale-[0.98]
+           focus:outline-none focus:ring-2 focus:ring-gold/50 focus:ring-offset-2;
   }
 
   .btn-whatsapp {
@@ -73,10 +88,135 @@
            focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/15
            hover:border-primary/40;
   }
+
+  .eyebrow {
+    @apply text-sm font-semibold uppercase tracking-wider text-primary;
+  }
+
+  /* Long-form legal / article copy. */
+  .prose-legal h2 {
+    @apply font-heading text-xl md:text-2xl font-bold text-ink mt-10 mb-3;
+  }
+  .prose-legal p {
+    @apply text-ink-soft leading-relaxed mb-4;
+  }
+  .prose-legal ul {
+    @apply mb-4 space-y-2;
+  }
+  .prose-legal li {
+    @apply text-ink-soft leading-relaxed pr-5 relative;
+  }
+  .prose-legal li::before {
+    content: "";
+    @apply absolute right-0 top-[0.65em] h-1.5 w-1.5 rounded-full bg-primary;
+  }
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
+
+  /* Marks a value the client still owes us. Visible but clearly provisional. */
+  .pending-value {
+    @apply rounded-md border border-dashed border-gold/70 bg-gold/10 px-2 py-0.5
+           text-base font-medium text-ink-soft;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Scroll reveal. Only arms itself once JS is confirmed running, so the page
+   still renders fully if the bundle fails.
+   ───────────────────────────────────────────────────────────────────────────*/
+.js [data-reveal] {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 350ms ease-out, transform 350ms ease-out;
+  will-change: opacity, transform;
+}
+
+.js [data-reveal][data-revealed] {
+  opacity: 1;
+  transform: none;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Accessibility widget hooks (Israeli Equal Rights regulations / IS 5568 AA).
+   ───────────────────────────────────────────────────────────────────────────*/
+html.a11y-large-text {
+  font-size: 112.5%;
+}
+html.a11y-larger-text {
+  font-size: 125%;
+}
+
+html.a11y-readable-font,
+html.a11y-readable-font body {
+  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif !important;
+  letter-spacing: 0.01em;
+}
+
+html.a11y-high-contrast {
+  filter: contrast(1.35);
+}
+
+html.a11y-highlight-links a,
+html.a11y-highlight-links button:not([aria-label]) {
+  text-decoration: underline !important;
+  text-underline-offset: 3px;
+  outline: 1px solid currentColor;
+  outline-offset: 2px;
+}
+
+html.a11y-big-cursor,
+html.a11y-big-cursor * {
+  cursor:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'><path d='M8 4l26 18-11 2 6 13-5 2-6-13-10 8z' fill='white' stroke='black' stroke-width='2.5' stroke-linejoin='round'/></svg>")
+      4 4,
+    auto !important;
+}
+
+html.a11y-reduce-motion *,
+html.a11y-reduce-motion *::before,
+html.a11y-reduce-motion *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+
+html.a11y-reduce-motion .js [data-reveal],
+html.a11y-reduce-motion [data-reveal] {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .js [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Screen-reader-only helper (skip link, form hints). */
+.sr-only-focusable:not(:focus):not(:focus-within) {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
 }

@@ -1,13 +1,18 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { motion } from "framer-motion";
-import { Check, Camera, ChevronRight, ChevronLeft } from "lucide-react";
+import { Camera, Check, ChevronLeft, ChevronRight } from "lucide-react";
+import Reveal from "./Reveal";
 
 /**
- * PLACEHOLDER testimonials — to be replaced with the real WhatsApp screenshots
- * extracted from the client's chat (with written consent + PII blurred).
- * Drop the real screenshot into /public/testimonials and set `realSrc`.
+ * Testimonials rendered as WhatsApp chat bubbles; hover or tap reveals the
+ * original screenshot behind each one.
+ *
+ * The emoji in `messages` are the only ones on the site. They are verbatim
+ * quotes from clients' own messages, and the original screenshot is one tap
+ * away - stripping them would make an authentic quote read as copywriting.
+ * The site-wide "no emoji" rule applies to chrome and decoration, not to
+ * quoted speech. Raise with the client if he wants them gone anyway.
  */
 type Testimonial = {
   name: string;
@@ -138,15 +143,9 @@ export default function TestimonialsWhatsApp() {
   };
 
   return (
-    <section className="section-padding bg-cream overflow-hidden">
+    <section className="section-padding bg-cream-soft overflow-hidden">
       <div className="container-custom">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="mb-10 flex flex-col items-center gap-4 text-center md:flex-row md:justify-between md:text-right"
-        >
+        <Reveal className="mb-10 flex flex-col items-center gap-4 text-center md:flex-row md:justify-between md:text-right">
           <div>
             <span className="text-sm font-semibold uppercase tracking-wider text-primary">
               מילים של לקוחות
@@ -175,7 +174,7 @@ export default function TestimonialsWhatsApp() {
               <ChevronLeft size={20} />
             </button>
           </div>
-        </motion.div>
+        </Reveal>
 
         <div
           ref={scrollerRef}
