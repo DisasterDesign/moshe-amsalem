@@ -1,14 +1,7 @@
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, Calendar, Clock } from "lucide-react";
 import type { Article } from "@/content/types";
-
-const CATEGORY_TONE: Record<string, string> = {
-  "מקרקעין": "from-[#27717F] to-[#153243]",
-  "מיסוי מקרקעין": "from-[#327B87] to-[#1F5563]",
-  "התחדשות עירונית": "from-[#2A6072] to-[#153243]",
-  "צוואות וירושות": "from-[#3D5560] to-[#153243]",
-  "משפחה": "from-[#8A6437] to-[#5C4224]",
-};
 
 function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString("he-IL", {
@@ -19,28 +12,30 @@ function formatDate(iso: string) {
 }
 
 export default function ArticleCard({ article }: { article: Article }) {
-  const tone = CATEGORY_TONE[article.category] ?? "from-[#27717F] to-[#153243]";
-
   return (
     <article className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-white shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:border-primary/40 hover:shadow-xl hover:shadow-primary/10">
-      {/* Cover. A generated gradient plate until the client supplies imagery. */}
-      <Link
-        href={`/articles/${article.slug}`}
-        className="relative block aspect-[16/9] overflow-hidden"
-        tabIndex={-1}
-        aria-hidden="true"
-      >
-        <span className={`absolute inset-0 bg-gradient-to-bl ${tone}`} />
-        <span className="absolute inset-x-0 top-0 h-24 bg-white/10 blur-2xl" />
-        <span className="absolute inset-0 flex items-center justify-center p-6 text-center">
-          <span className="font-heading text-lg font-bold leading-snug text-white">
-            {article.title}
-          </span>
-        </span>
-        <span className="absolute bottom-3 right-3 rounded-full bg-white/95 px-3 py-1 text-xs font-semibold text-primary">
+      {/*
+        Decorative cover: alt="" on purpose. The title sits directly beneath and
+        is itself the link, so describing the photo would only make a screen
+        reader announce the same card twice.
+      */}
+      <div className="relative aspect-[16/9] overflow-hidden bg-dark">
+        <Image
+          src={article.image}
+          alt=""
+          fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]"
+        />
+        {/* Scrim so the category pill keeps its contrast on any photo. */}
+        <span
+          aria-hidden="true"
+          className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-dark/55 to-transparent"
+        />
+        <span className="absolute bottom-3 right-3 rounded-full bg-white/95 px-3 py-1 text-xs font-semibold text-primary shadow-sm">
           {article.category}
         </span>
-      </Link>
+      </div>
 
       <div className="flex flex-1 flex-col p-5">
         <div className="mb-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-ink-muted">

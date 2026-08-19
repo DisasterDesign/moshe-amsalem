@@ -9,6 +9,7 @@ import type { Article } from "./types";
 export const articles: Article[] = [
   {
     slug: "buying-second-hand-apartment",
+    image: "/articles/buying-second-hand-apartment.jpg",
     title: "קניית דירה יד שנייה",
     category: "מקרקעין",
     excerpt: "קניית דירה יד שנייה נעשית מול אדם פרטי, בלי ערבויות חוק מכר. מה שמגן עליכם הוא הבדיקה שלפני החתימה ומבנה ההסכם: זכויות, שעבודים, היתרים, תשלומים ורישום",
@@ -40,6 +41,7 @@ export const articles: Article[] = [
   },
   {
     slug: "purchase-tax-guide",
+    image: "/articles/purchase-tax-guide.jpg",
     title: "מס רכישה",
     category: "מיסוי מקרקעין",
     excerpt: "מס רכישה נקבע בחוק ולא במשא ומתן, והוא תלוי בעיקר במעמד שלכם כרוכשים. הסבר על מנגנון המדרגות, על ההבדל בין דירה יחידה לדירה נוספת ועל ההקלות הקיימות.",
@@ -76,6 +78,7 @@ export const articles: Article[] = [
   },
   {
     slug: "buying-from-developer",
+    image: "/articles/buying-from-developer.jpg",
     title: "קניית דירה מקבלן",
     category: "מקרקעין",
     excerpt: "רכישת דירה מקבלן שונה מרכישה יד שנייה כמעט בכל פרמטר. מדריך מעשי לערבות חוק מכר, למפרט הטכני, לשינויי דיירים, לאיחור במסירה ולתקופת הבדק - לפני שחותמים.",
@@ -105,6 +108,7 @@ export const articles: Article[] = [
   },
   {
     slug: "pinui-binui-tenant-rights",
+    image: "/articles/pinui-binui-tenant-rights.jpg",
     title: "זכויות דיירים בפינוי-בינוי",
     category: "התחדשות עירונית",
     excerpt: "פינוי-בינוי מתחיל הרבה לפני שהדחפור מגיע. מה הדיירים מקבלים, איך בוחרים נציגות ועורך דין, אילו ערבויות חייבות להינתן, ועל מה כדאי להתעקש לפני שחותמים על הסכם עם יזם",
@@ -135,6 +139,7 @@ export const articles: Article[] = [
   },
   {
     slug: "prenup-before-marriage",
+    image: "/articles/prenup-before-marriage.jpg",
     title: "הסכם ממון לפני חתונה",
     category: "משפחה",
     excerpt: "הסכם ממון לפני החתונה אינו הבעת חוסר אמון אלא הגדרה מסודרת של מה שייך למי. מה אפשר להסדיר בו, מה קורה בלעדיו ואיזה אישור נדרש כדי שיהיה לו תוקף.",
@@ -164,6 +169,7 @@ export const articles: Article[] = [
   },
   {
     slug: "why-enduring-power-of-attorney",
+    image: "/articles/why-enduring-power-of-attorney.jpg",
     title: "למה צריך ייפוי כוח מתמשך",
     category: "צוואות וירושות",
     excerpt: "ייפוי כוח מתמשך מאפשר לכם לקבוע מראש מי יקבל החלטות בענייני הרכוש, האישיים והרפואיים שלכם אם לא תוכלו עוד להחליט בעצמכם. מה המסמך כולל, ולמה חשוב להסדיר אותו בזמן",

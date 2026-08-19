@@ -29,6 +29,8 @@ export type Article = {
   readingMinutes: number;
   /** ISO date, used for <time> and JSON-LD. */
   date: string;
+  /** Cover image under /public. Also used as the page's Open Graph image. */
+  image: string;
   metaTitle: string;
   metaDescription: string;
   blocks: ArticleBlock[];

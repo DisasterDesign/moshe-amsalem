@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, Calendar, Clock, Info } from "lucide-react";
@@ -23,6 +24,7 @@ export function generateMetadata({ params }: { params: { slug: string } }) {
     description: article.metaDescription,
     path: `/articles/${article.slug}`,
     type: "article",
+    image: article.image,
   });
 }
 
@@ -51,6 +53,18 @@ export default function ArticlePage({ params }: { params: { slug: string } }) {
       <article className="section-padding bg-cream">
         <div className="container-custom">
           <div className="mx-auto max-w-3xl">
+            {/* Decorative: the h1 in the banner above already names the piece. */}
+            <div className="relative mb-8 aspect-[16/9] overflow-hidden rounded-2xl bg-dark shadow-lg shadow-dark/10">
+              <Image
+                src={article.image}
+                alt=""
+                fill
+                priority
+                sizes="(max-width: 768px) 100vw, 768px"
+                className="object-cover"
+              />
+            </div>
+
             {/* Meta strip */}
             <div className="mb-8 flex flex-wrap items-center gap-x-5 gap-y-2 border-b border-line pb-6 text-sm text-ink-muted">
               <span className="rounded-full bg-primary/10 px-3 py-1 font-semibold text-primary">
