@@ -8,7 +8,9 @@
  *
  * The bundled snapshot below is the fallback: if the function is unreachable or
  * the API key is not set on the Pages project, the UI still shows real numbers
- * rather than an empty shell. Snapshot taken July 2026 - 5.0, 5 reviews.
+ * rather than an empty shell. Snapshot taken 24 August 2026 - 5.0, 6 ratings.
+ * Google returns at most five review bodies and picks which five, so this
+ * mirrors its current selection rather than the full set.
  */
 
 "use client";
@@ -27,7 +29,7 @@ export type Review = {
 };
 
 export const FALLBACK_RATING = 5.0;
-export const FALLBACK_TOTAL = 5;
+export const FALLBACK_TOTAL = 6;
 
 export const PROFILE_URL = "https://maps.app.goo.gl/T2Azt3EGu4W1iXd49";
 // Opens Google's "write a review" dialog straight from the office listing.
@@ -39,35 +41,35 @@ export const FALLBACK_REVIEWS: Review[] = [
     id: "shalo",
     author: "שלו אלימלך",
     rating: 5,
-    relativeTime: "לפני 3 חודשים",
+    relativeTime: "לפני 5 חודשים",
     text: "אני רוצה להמליץ בחום על עורך הדין משה אמסלם. קיבלתי ממנו שירות מקצועי, יסודי ואמין לאורך כל הדרך. הוא היה זמין לכל שאלה, הסביר כל שלב בצורה ברורה ונתן לי תחושת ביטחון מלאה בתהליך.",
   },
   {
     id: "efrat",
     author: "Efrat Shoshana",
     rating: 5,
-    relativeTime: "לפני חודשיים",
+    relativeTime: "לפני 3 חודשים",
     text: "זכות גדולה לעבוד עם עורך דין משה אמסלם. עברנו יחד כמה עסקאות והוא תמיד היה שם בשבילי - זמין, קשוב ומנוסה מאוד. הוא הופך כל תהליך מורכב לפשוט ורגוע בזכות האדיבות והאכפתיות שלו. מי שמחפש ליווי צמוד ומקצועי, זה הכתובת. תודה על הכל!",
   },
   {
-    id: "miki",
-    author: "miki hai",
+    id: "shira",
+    author: "שירה",
     rating: 5,
-    relativeTime: "לפני 3 ימים",
-    text: "מושיקו ליווה אותי בעסקת רכישה של דירה, מקצועי מאוד, מענה בכל שעות היום. בזכות מושיקו קבלתי חיים חדשים מעבר לעזרה במכירת דירה.",
+    relativeTime: "בשבוע האחרון",
+    text: "אני ממליצה בחום על עורך הדין משה אמסלם. קיבלתי שירות מקצועי, יסודי ומהיר בעסקת הנדל״ן שלנו. זמינות גבוהה ויחס אישי לאורך כל הדרך. מומלץ בחום רב.",
   },
   {
     id: "neve",
     author: "נווה לוצקי",
     rating: 5,
-    relativeTime: "לפני חודשיים",
+    relativeTime: "לפני 3 חודשים",
     text: "מושיקו ליווה אותי בעסקת רכישה של דירה, מקצועי מאוד, זמין ונעים. ממליץ בחום!",
   },
   {
     id: "yossi",
     author: "Yossi Parienti",
     rating: 5,
-    relativeTime: "לפני 4 חודשים",
+    relativeTime: "לפני 5 חודשים",
     text: "היה לי איתו כמה וכמה עבודות עורך דין נאמן מאוד יסודי מאוד בקיצור מומלץ",
   },
 ];

@@ -33,7 +33,7 @@ export const siteConfig = {
 
   social: {
     facebook: "https://www.facebook.com/moshiko.amsalem.7",
-    instagram: "https://www.instagram.com/moshiko_amsalem",
+    instagram: "https://www.instagram.com/amsalem_law",
   },
 
   googleProfileUrl: "https://maps.app.goo.gl/T2Azt3EGu4W1iXd49",
