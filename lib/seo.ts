@@ -12,7 +12,7 @@ export function buildMetadata({
   description,
   path,
   type = "website",
-  image = "/moshe-amsalem.jpeg",
+  image = "/og-image.jpg",
 }: {
   title: string;
   description: string;
@@ -34,6 +34,9 @@ export function buildMetadata({
       type,
       siteName: siteConfig.name,
       locale: "he_IL",
+      // og-image.jpg really is 1200x630. Article covers passed in here are
+      // 1600x900 - same 16:9 shape, and platforms scale to fit - so the
+      // declared pair stays a faithful aspect hint either way.
       images: [{ url: `${BASE}${image}`, width: 1200, height: 630, alt: siteConfig.name }],
     },
     twitter: {
