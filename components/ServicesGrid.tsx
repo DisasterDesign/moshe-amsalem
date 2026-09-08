@@ -16,9 +16,7 @@ export default function ServicesGrid({
       <div className="container-custom">
         {showTitle && (
           <SectionHeading
-            eyebrow="במה אני יכול לעזור"
-            title="תחומי"
-            highlight="עיסוק"
+            title="תחומי עיסוק"
             description="ליווי משפטי מקצועי ואישי בכל שלב, עם יחס אנושי ותשומת לב לפרטים."
           />
         )}

@@ -1,8 +1,10 @@
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
 import CTASection from "@/components/CTASection";
 import HomeContact from "@/components/HomeContact";
 import PageHero from "@/components/PageHero";
+import Reveal from "@/components/Reveal";
 import ServicesGrid from "@/components/ServicesGrid";
-import Timeline from "@/components/Timeline";
 import { BreadcrumbsJsonLd } from "@/components/JsonLd";
 import { buildMetadata } from "@/lib/seo";
 
@@ -26,7 +28,22 @@ export default function ServicesPage() {
       />
 
       <ServicesGrid showTitle={false} showCTA={false} />
-      <Timeline />
+
+      {/* Quiet pointer to the full deal timeline, which lives on its own page. */}
+      <section className="bg-cream pb-16 md:pb-24">
+        <div className="container-custom text-center">
+          <Reveal>
+            <Link
+              href="/timeline"
+              className="inline-flex items-center gap-2 font-medium text-ink-soft transition-colors hover:text-primary"
+            >
+              איפה אתם בעסקה? מדריך השלבים המלא
+              <ArrowLeft size={17} aria-hidden="true" />
+            </Link>
+          </Reveal>
+        </div>
+      </section>
+
       <CTASection />
       <HomeContact source="טופס עמוד תחומי עיסוק" />
 

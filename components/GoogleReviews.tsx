@@ -4,13 +4,20 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Star } from "lucide-react";
 import GoogleGlyph from "./GoogleGlyph";
 import Reveal from "./Reveal";
+import { WhatsappChatCard, whatsappTestimonials } from "./TestimonialsWhatsApp";
 import { useGoogleReviews } from "@/lib/reviews";
 
 /**
- * Live Google reviews carousel. Data comes from `useGoogleReviews`, which is
- * shared with the floating badge so the page fetches once and falls back to a
- * bundled snapshot when the endpoint is unavailable.
+ * The single social-proof section of the site: live Google reviews carousel
+ * plus one WhatsApp message card. Review data comes from `useGoogleReviews`,
+ * which is shared with the floating badge so the page fetches once and falls
+ * back to a bundled snapshot when the endpoint is unavailable.
+ *
+ * The remaining WhatsApp cards live on the About page, so the home page keeps
+ * one header and one proof block instead of two competing sections.
  */
+
+const featuredWhatsapp = whatsappTestimonials.find((t) => t.name === "מיכאל ח.");
 
 function Stars({ size = 16, count = 5 }: { size?: number; count?: number }) {
   return (
@@ -61,9 +68,7 @@ export default function GoogleReviews() {
     <section className="section-padding overflow-hidden bg-cream">
       <div className="container-custom">
         <Reveal className="mb-10 text-center">
-          <h2 className="heading-lg text-ink">
-            לקוחות <span className="text-primary">ממליצים</span>
-          </h2>
+          <h2 className="heading-lg text-ink">לקוחות ממליצים</h2>
 
           <div className="mt-5 flex items-center justify-center gap-4">
             <GoogleGlyph className="h-8 w-8" />
@@ -142,6 +147,14 @@ export default function GoogleReviews() {
               />
             ))}
           </div>
+        )}
+
+        {/* One WhatsApp message, under the same header - no second section */}
+        {featuredWhatsapp && (
+          <Reveal className="mt-12 flex flex-col items-center gap-4">
+            <p className="text-sm text-ink-muted">גם ישירות מהוואטסאפ:</p>
+            <WhatsappChatCard t={featuredWhatsapp} />
+          </Reveal>
         )}
 
         {/* CTAs */}

@@ -39,9 +39,7 @@ export default function HomeContact({ source = "טופס יצירת קשר" }: {
     <section id="contact" className="section-padding scroll-mt-28 bg-cream">
       <div className="container-custom">
         <SectionHeading
-          eyebrow="כאן בשבילכם"
-          title="נשמח"
-          highlight="לשמוע מכם"
+          title="נשמח לשמוע מכם"
           description="השאירו פרטים ואחזור אליכם בהקדם, או דברו איתי ישירות בוואטסאפ."
         />
 

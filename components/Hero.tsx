@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Check, MessageCircle, Star } from "lucide-react";
-import HeroLeadForm from "./HeroLeadForm";
 import { waLink, WA_MESSAGES } from "@/config/site";
 import { heroBenefits } from "@/content/home";
 
@@ -14,7 +13,7 @@ export default function Hero() {
         <div className="absolute bottom-0 left-0 h-72 w-72 rounded-full bg-gold/5 blur-3xl" />
       </div>
 
-      <div className="container-custom relative pb-10 pt-12 md:pt-16">
+      <div className="container-custom relative pb-14 pt-12 md:pb-20 md:pt-16">
         <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14">
           {/* Text */}
           <div className="order-1 text-center lg:text-right">
@@ -102,11 +101,6 @@ export default function Hero() {
               />
             </div>
           </div>
-        </div>
-
-        {/* Lead form, pinned directly under the hero */}
-        <div className="mt-10 lg:mt-14">
-          <HeroLeadForm />
         </div>
       </div>
     </section>

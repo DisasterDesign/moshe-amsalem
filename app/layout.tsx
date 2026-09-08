@@ -4,7 +4,6 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FloatingWhatsApp from "@/components/FloatingWhatsApp";
-import GoogleReviewsBadge from "@/components/GoogleReviewsBadge";
 import AccessibilityWidget from "@/components/AccessibilityWidget";
 import CookieBanner from "@/components/CookieBanner";
 import { OrganizationJsonLd } from "@/components/JsonLd";
@@ -79,7 +78,8 @@ export default function RootLayout({
 
         <Footer />
 
-        <GoogleReviewsBadge />
+        {/* The Google rating already appears in the hero, the stat strip and the
+            reviews section - a third floating badge only crowded the corner. */}
         <FloatingWhatsApp />
         <AccessibilityWidget />
         <CookieBanner />

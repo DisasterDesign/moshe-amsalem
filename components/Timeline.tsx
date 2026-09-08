@@ -1,8 +1,13 @@
 import Link from "next/link";
-import { AlertTriangle, ArrowLeft } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import Reveal from "./Reveal";
 import SectionHeading from "./SectionHeading";
 import { dealTimeline } from "@/content/home";
+
+/** The one stage that genuinely justifies a callout - a document people sign
+ *  unadvised that can already bind them. Every other risk reads as a quiet
+ *  closing line, so the emphasis stays meaningful. */
+const CRITICAL_STAGE = "זיכרון דברים";
 
 /**
  * The five stages of a residential transaction.
@@ -14,9 +19,7 @@ export default function Timeline() {
     <section id="timeline" className="section-padding scroll-mt-28 bg-cream-soft">
       <div className="container-custom">
         <SectionHeading
-          eyebrow="שלב אחרי שלב"
-          title="ציר הזמן של"
-          highlight="עסקת נדל״ן"
+          title="ציר הזמן של עסקת נדל״ן"
           description="חמישה שלבים מהרגע שמצאתם נכס ועד שהמפתח והרישום אצלכם. בכל שלב מסומן גם מה עלול להשתבש בלי ליווי משפטי."
         />
 
@@ -58,17 +61,19 @@ export default function Timeline() {
                   <p className="mb-3 font-medium text-primary">{stage.summary}</p>
                   <p className="leading-relaxed text-ink-soft">{stage.detail}</p>
 
-                  <div className="mt-5 flex items-start gap-3 rounded-xl border-r-4 border-gold bg-gold/10 p-4">
-                    <AlertTriangle
-                      size={18}
-                      className="mt-0.5 flex-none text-gold"
-                      aria-hidden="true"
-                    />
-                    <p className="text-sm leading-relaxed text-ink-soft">
-                      <span className="font-bold text-ink">בלי ליווי משפטי: </span>
+                  {stage.title === CRITICAL_STAGE ? (
+                    <div className="mt-5 rounded-xl border-r-4 border-gold bg-gold/10 p-4">
+                      <p className="text-sm leading-relaxed text-ink-soft">
+                        <span className="font-bold text-ink">בלי ליווי משפטי: </span>
+                        {stage.risk}
+                      </p>
+                    </div>
+                  ) : (
+                    <p className="mt-4 text-sm italic leading-relaxed text-ink-muted">
+                      <span className="font-semibold not-italic">בלי ליווי משפטי: </span>
                       {stage.risk}
                     </p>
-                  </div>
+                  )}
 
                   {stage.article && (
                     <Link

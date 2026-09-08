@@ -6,22 +6,22 @@ const steps = [
   {
     icon: MessageSquare,
     title: "שיחת היכרות",
-    description: "שיחה קצרה בוואטסאפ או בטלפון להבנת הצורך - בלי התחייבות ובלי עלות.",
+    description: "שיחה קצרה להבנת הצורך - בלי עלות ובלי התחייבות.",
   },
   {
     icon: Handshake,
     title: "פגישת ייעוץ",
-    description: "נפגשים, בוחנים את התיק לעומק, ומסבירים את התהליך והאפשרויות בשפה ברורה.",
+    description: "נפגשים, בוחנים את התיק ומסבירים את האפשרויות בפשטות.",
   },
   {
     icon: FileSignature,
     title: "ליווי וטיפול",
-    description: "עריכת המסמכים, ניהול המשא ומתן וייצוג מולכם ומול כל הגורמים - לאורך כל הדרך.",
+    description: "עריכת מסמכים, ניהול משא ומתן וייצוג לאורך כל הדרך.",
   },
   {
     icon: KeyRound,
     title: "סגירה בראש שקט",
-    description: "חתימה, רישום הזכויות והשלמת העסקה - עם ליווי וזמינות גם אחרי.",
+    description: "חתימה, רישום הזכויות וזמינות גם אחרי העסקה.",
   },
 ];
 
@@ -30,10 +30,8 @@ export default function Process() {
     <section className="section-padding bg-cream">
       <div className="container-custom">
         <SectionHeading
-          eyebrow="פשוט וברור"
-          title="איך"
-          highlight="עובדים יחד"
-          description="תהליך שקוף בארבעה שלבים - כדי שתדעו בדיוק למה לצפות בכל רגע."
+          title="איך עובדים יחד"
+          description="תהליך שקוף בארבעה שלבים, כדי שתדעו למה לצפות."
         />
 
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">

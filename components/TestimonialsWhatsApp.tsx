@@ -14,7 +14,7 @@ import Reveal from "./Reveal";
  * The site-wide "no emoji" rule applies to chrome and decoration, not to
  * quoted speech. Raise with the client if he wants them gone anyway.
  */
-type Testimonial = {
+export type WhatsappTestimonial = {
   name: string;
   initials: string;
   context: string;
@@ -23,7 +23,8 @@ type Testimonial = {
   realSrc?: string;
 };
 
-const testimonials: Testimonial[] = [
+/** Exported so a single card can be embedded inside the Google reviews section. */
+export const whatsappTestimonials: WhatsappTestimonial[] = [
   {
     name: "חני",
     initials: "ח",
@@ -58,7 +59,7 @@ const testimonials: Testimonial[] = [
   },
 ];
 
-function ChatCard({ t }: { t: Testimonial }) {
+export function WhatsappChatCard({ t }: { t: WhatsappTestimonial }) {
   const [showReal, setShowReal] = useState(false);
 
   return (
@@ -147,12 +148,7 @@ export default function TestimonialsWhatsApp() {
       <div className="container-custom">
         <Reveal className="mb-10 flex flex-col items-center gap-4 text-center md:flex-row md:justify-between md:text-right">
           <div>
-            <span className="text-sm font-semibold uppercase tracking-wider text-primary">
-              מילים של לקוחות
-            </span>
-            <h2 className="heading-lg mt-3 text-ink">
-              המלצות <span className="text-primary">אמיתיות</span>
-            </h2>
+            <h2 className="heading-lg text-ink">המלצות אמיתיות</h2>
           </div>
 
           {/* Arrows (RTL: right = previous) */}
@@ -180,8 +176,8 @@ export default function TestimonialsWhatsApp() {
           ref={scrollerRef}
           className="flex snap-x snap-mandatory gap-5 overflow-x-auto pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         >
-          {testimonials.map((t) => (
-            <ChatCard key={t.name} t={t} />
+          {whatsappTestimonials.map((t) => (
+            <WhatsappChatCard key={t.name} t={t} />
           ))}
         </div>
       </div>

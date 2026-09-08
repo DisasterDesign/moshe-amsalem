@@ -7,13 +7,10 @@ import FAQAccordion from "@/components/FAQAccordion";
 import GoogleReviews from "@/components/GoogleReviews";
 import Hero from "@/components/Hero";
 import HomeContact from "@/components/HomeContact";
-import MidPageCta from "@/components/MidPageCta";
 import Process from "@/components/Process";
 import Reveal from "@/components/Reveal";
 import SectionHeading from "@/components/SectionHeading";
 import ServicesGrid from "@/components/ServicesGrid";
-import TestimonialsWhatsApp from "@/components/TestimonialsWhatsApp";
-import Timeline from "@/components/Timeline";
 import { FaqJsonLd } from "@/components/JsonLd";
 import { articles } from "@/content/articles";
 import { homeFaq } from "@/content/home";
@@ -34,19 +31,30 @@ export default function Home() {
       <Hero />
       <Counters />
       <ServicesGrid />
-      <Timeline />
-      <MidPageCta />
       <Process />
-      <TestimonialsWhatsApp />
+
+      {/* Quiet pointer to the full deal timeline, which lives on its own page. */}
+      <section className="bg-cream pb-16 md:pb-24">
+        <div className="container-custom text-center">
+          <Reveal>
+            <Link
+              href="/timeline"
+              className="inline-flex items-center gap-2 font-medium text-ink-soft transition-colors hover:text-primary"
+            >
+              איפה אתם בעסקה? מדריך השלבים המלא
+              <ArrowLeft size={17} aria-hidden="true" />
+            </Link>
+          </Reveal>
+        </div>
+      </section>
+
       <GoogleReviews />
 
       {/* FAQ */}
       <section className="section-padding bg-cream">
         <div className="container-custom">
           <SectionHeading
-            eyebrow="לפני שנתחיל"
-            title="שאלות"
-            highlight="נפוצות"
+            title="שאלות נפוצות"
             description="התשובות לשאלות שאני נשאל הכי הרבה. לא מצאתם את שלכם? אפשר פשוט לשאול."
           />
           <FAQAccordion items={homeFaq} />
@@ -57,9 +65,7 @@ export default function Home() {
       <section className="section-padding bg-cream-soft">
         <div className="container-custom">
           <SectionHeading
-            eyebrow="מידע שימושי"
-            title="מאמרים"
-            highlight="אחרונים"
+            title="מאמרים אחרונים"
             description="מדריכים קצרים על הדברים שכדאי לדעת לפני שחותמים."
           />
 

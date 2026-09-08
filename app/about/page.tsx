@@ -7,6 +7,7 @@ import MidPageCta from "@/components/MidPageCta";
 import PageHero from "@/components/PageHero";
 import Reveal from "@/components/Reveal";
 import SectionHeading from "@/components/SectionHeading";
+import TestimonialsWhatsApp from "@/components/TestimonialsWhatsApp";
 import { BreadcrumbsJsonLd } from "@/components/JsonLd";
 import { aboutApproach, aboutPrinciples } from "@/content/home";
 import { mapsEmbedUrl, siteConfig, wazeUrl } from "@/config/site";
@@ -183,6 +184,9 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
+
+      {/* Client messages - the full set lives here, the home page shows one */}
+      <TestimonialsWhatsApp />
 
       <MidPageCta
         title="רוצים לדבר איתי ישירות?"
