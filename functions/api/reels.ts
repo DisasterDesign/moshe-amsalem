@@ -95,12 +95,22 @@ const FETCH_TIMEOUT_MS = 8000;
 // "nonexisting field"). Try the richest set first and fall back on code 100 only.
 // media_product_type is documented as Facebook-Login-only, so it is dropped before
 // media_audio_type: the MUSIC filter below keeps working whenever possible.
+// Meta's IG Media reference (Aug 2026) marks media_product_type and caption as
+// Facebook-Login-only, and media_audio_type is new (Jun 2026). Any of the three
+// may come back as "nonexisting field" (code 100), so the sets walk down from
+// all three optional fields, dropping one at a time: whichever single field is
+// rejected, the next working set still carries the other two.
+//   C = caption, P = media_product_type, A = media_audio_type
+const BASE_FIELDS = "id,media_type,media_url,thumbnail_url,permalink,timestamp";
 const FIELD_SETS = [
-  "id,caption,media_type,media_product_type,media_audio_type,media_url,thumbnail_url,permalink,timestamp",
-  "id,caption,media_type,media_audio_type,media_url,thumbnail_url,permalink,timestamp",
-  "id,caption,media_type,media_product_type,media_url,thumbnail_url,permalink,timestamp",
-  "id,caption,media_type,media_url,thumbnail_url,permalink,timestamp",
-];
+  ["caption", "media_product_type", "media_audio_type"], // C P A
+  ["caption", "media_audio_type"], //                       C A   (P rejected)
+  ["caption", "media_product_type"], //                     C P   (A rejected)
+  ["media_product_type", "media_audio_type"], //            P A   (C rejected)
+  ["media_audio_type"], //                                  A
+  ["caption"], //                                           C
+  [], //                                                    base only
+].map((extra) => [BASE_FIELDS, ...extra].join(","));
 
 function jsonResponse(payload, status = 200, cacheSeconds = 0) {
   return new Response(JSON.stringify(payload), {
