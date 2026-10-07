@@ -27,7 +27,7 @@ const heebo = Heebo({
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: {
-    default: "עו״ד משה אמסלם | מקרקעין והתחדשות עירונית",
+    default: "עורך דין משה אמסלם, תל אביב | מקרקעין והתחדשות עירונית",
     template: "%s | עו״ד משה אמסלם",
   },
   description:

@@ -14,9 +14,9 @@ import { mapsEmbedUrl, siteConfig, wazeUrl } from "@/config/site";
 import { buildMetadata } from "@/lib/seo";
 
 export const metadata = buildMetadata({
-  title: "אודות עו״ד משה אמסלם | מקרקעין והתחדשות עירונית",
+  title: "עורך דין משה אמסלם - אודות, השכלה והסמכות",
   description:
-    "עו״ד משה אמסלם, בעל תואר במשפטים מהמכללה למנהל וחבר לשכת עורכי הדין משנת 2021. מתמחה במקרקעין, התחדשות עירונית, צוואות וירושות והסכמי ממון.",
+    "עורך דין משה אמסלם, תל אביב: תואר ראשון במשפטים מהמכללה למנהל וחבר לשכת עורכי הדין משנת 2021. מתמחה במקרקעין, התחדשות עירונית, צוואות וירושות והסכמי ממון.",
   path: "/about",
 });
 
@@ -51,9 +51,9 @@ export default function AboutPage() {
   return (
     <>
       <PageHero
-        title="אודות"
-        highlight="המשרד"
-        subtitle="משרד עו״ד משה אמסלם - מקרקעין, התחדשות עירונית וליווי אישי לאורך כל הדרך."
+        title="עורך דין"
+        highlight="משה אמסלם"
+        subtitle="מקרקעין, התחדשות עירונית וליווי אישי לאורך כל הדרך - ממגדל מידטאון בתל אביב."
         crumbs={crumbs}
       />
 
@@ -64,7 +64,7 @@ export default function AboutPage() {
             <Reveal className="overflow-hidden rounded-2xl border border-line shadow-lg shadow-primary/5">
               <Image
                 src="/moshe-amsalem.jpeg"
-                alt="עו״ד משה אמסלם"
+                alt="דיוקן של עורך דין משה אמסלם"
                 width={600}
                 height={750}
                 className="aspect-[4/5] h-full w-full object-cover object-top"

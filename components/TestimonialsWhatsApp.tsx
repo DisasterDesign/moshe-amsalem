@@ -110,6 +110,8 @@ export function WhatsappChatCard({ t }: { t: WhatsappTestimonial }) {
             <img
               src={t.realSrc}
               alt={`צילום מסך של הודעת תודה מ${t.name}`}
+              loading="lazy"
+              decoding="async"
               className="max-h-full max-w-full rounded-lg border border-line object-contain"
             />
           ) : (

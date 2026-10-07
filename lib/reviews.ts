@@ -16,6 +16,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { siteConfig } from "@/config/site";
 
 export type Review = {
   id: string;
@@ -31,7 +32,7 @@ export type Review = {
 export const FALLBACK_RATING = 5.0;
 export const FALLBACK_TOTAL = 6;
 
-export const PROFILE_URL = "https://maps.app.goo.gl/T2Azt3EGu4W1iXd49";
+export const PROFILE_URL = siteConfig.googleProfileUrl;
 // Opens Google's "write a review" dialog straight from the office listing.
 export const WRITE_REVIEW_URL =
   "https://www.google.com/maps/place//data=!4m3!3m2!1s0xac559dd818e0d573:0xfd1367a8b9dff4b1!12e1";

@@ -7,24 +7,24 @@ export const dynamic = "force-static";
 
 const BASE = siteConfig.url.replace(/\/$/, "");
 
+/**
+ * `lastModified` only where it is true. Stamping the build time on every URL
+ * teaches Google that this site's lastmod is noise - and then it ignores the
+ * real article dates too. Static pages simply omit it.
+ */
 export default function sitemap(): MetadataRoute.Sitemap {
-  const now = new Date();
-
-  const top: MetadataRoute.Sitemap = (
-    [
-      { url: BASE, changeFrequency: "monthly", priority: 1 },
-      { url: `${BASE}/about`, changeFrequency: "yearly", priority: 0.8 },
-      { url: `${BASE}/services`, changeFrequency: "monthly", priority: 0.9 },
-      { url: `${BASE}/timeline`, changeFrequency: "yearly", priority: 0.7 },
-      { url: `${BASE}/articles`, changeFrequency: "weekly", priority: 0.8 },
-      { url: `${BASE}/projects`, changeFrequency: "monthly", priority: 0.6 },
-      { url: `${BASE}/contact`, changeFrequency: "yearly", priority: 0.7 },
-    ] as const
-  ).map((e) => ({ ...e, lastModified: now }));
+  const top: MetadataRoute.Sitemap = [
+    { url: BASE, changeFrequency: "monthly", priority: 1 },
+    { url: `${BASE}/about`, changeFrequency: "yearly", priority: 0.8 },
+    { url: `${BASE}/services`, changeFrequency: "monthly", priority: 0.9 },
+    { url: `${BASE}/timeline`, changeFrequency: "yearly", priority: 0.7 },
+    { url: `${BASE}/articles`, changeFrequency: "weekly", priority: 0.8 },
+    { url: `${BASE}/projects`, changeFrequency: "monthly", priority: 0.6 },
+    { url: `${BASE}/contact`, changeFrequency: "yearly", priority: 0.7 },
+  ];
 
   const areas: MetadataRoute.Sitemap = practiceAreas.map((a) => ({
     url: `${BASE}/services/${a.slug}`,
-    lastModified: now,
     changeFrequency: "monthly",
     priority: 0.85,
   }));
@@ -38,7 +38,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const legal: MetadataRoute.Sitemap = ["privacy", "terms", "accessibility"].map((slug) => ({
     url: `${BASE}/legal/${slug}`,
-    lastModified: now,
     changeFrequency: "yearly",
     priority: 0.3,
   }));

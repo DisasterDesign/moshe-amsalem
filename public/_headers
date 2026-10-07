@@ -1,0 +1,5 @@
+# The *.pages.dev host serves an exact copy of ams-law.com. Keep it out of the
+# index so Google only ever sees the custom domain. Preview deployments already
+# get noindex from Cloudflare by default.
+https://:project.pages.dev/*
+  X-Robots-Tag: noindex

@@ -25,8 +25,10 @@ export const siteConfig = {
     city: "תל אביב",
     country: "IL",
     postalCode: "6492102",
-    lat: 32.0694,
-    lng: 34.7901,
+    // The Google Business Profile pin, so the schema, the map and Google's own
+    // listing all describe the same point.
+    lat: 32.0790855,
+    lng: 34.7950554,
   },
 
   hours: "א׳-ה׳: 09:00-18:00",
@@ -36,7 +38,9 @@ export const siteConfig = {
     instagram: "https://www.instagram.com/amsalem_law",
   },
 
-  googleProfileUrl: "https://maps.app.goo.gl/T2Azt3EGu4W1iXd49",
+  // Canonical CID form, as returned by the Places API (`googleMapsUri`). The
+  // maps.app.goo.gl share link 302s through tracking parameters.
+  googleProfileUrl: "https://maps.google.com/?cid=18236033290523899057",
 } as const;
 
 /**
@@ -69,8 +73,10 @@ export const WA_MESSAGES = {
   meeting: "היי משה, אשמח לתאם פגישת ייעוץ",
 } as const;
 
+// Pinned to the Google Business Profile listing (feature id + coordinates), so
+// the embed shows the office card rather than an anonymous point.
 export const mapsEmbedUrl =
-  "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3381.2!2d34.7901!3d32.0694!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x151d4b9b0c5f5b1b%3A0x0!2sMidtown%20Tower%2C%20Derech%20Menachem%20Begin%20144%2C%20Tel%20Aviv!5e0!3m2!1siw!2sil!4v1700000000000";
+  "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1690.6!2d34.7950554!3d32.0790855!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xac559dd818e0d573%3A0xfd1367a8b9dff4b1!2s%D7%9E%D7%A9%D7%94%20%D7%90%D7%9E%D7%A1%D7%9C%D7%9D%20-%20%D7%9E%D7%A9%D7%A8%D7%93%20%D7%A2%D7%95%D7%A8%D7%9B%D7%99%20%D7%93%D7%99%D7%9F!5e0!3m2!1siw!2sil!4v1700000000000";
 
 export const wazeUrl =
   "https://waze.com/ul?q=דרך%20מנחם%20בגין%20144%20תל%20אביב%20מגדל%20מידטאון&navigate=yes";

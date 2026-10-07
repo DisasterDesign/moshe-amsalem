@@ -38,8 +38,8 @@ export default function Footer() {
             </Link>
 
             <p className="mt-5 max-w-xs text-sm leading-relaxed text-light-secondary">
-              ליווי משפטי אישי ומקצועי בעסקאות מקרקעין, התחדשות עירונית, צוואות
-              וירושות והסכמי ממון.
+              עורך דין משה אמסלם, תל אביב. ליווי משפטי אישי ומקצועי בעסקאות
+              מקרקעין, התחדשות עירונית, צוואות וירושות והסכמי ממון.
             </p>
 
             <div className="mt-6 flex items-center gap-3">

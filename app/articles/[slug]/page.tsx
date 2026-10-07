@@ -70,6 +70,9 @@ export default function ArticlePage({ params }: { params: { slug: string } }) {
               <span className="rounded-full bg-primary/10 px-3 py-1 font-semibold text-primary">
                 {article.category}
               </span>
+              <Link href="/about" className="font-medium text-ink-soft transition-colors hover:text-primary">
+                עו״ד משה אמסלם
+              </Link>
               <span className="flex items-center gap-1.5">
                 <Calendar size={14} aria-hidden="true" />
                 <time dateTime={article.date}>{formatDate(article.date)}</time>

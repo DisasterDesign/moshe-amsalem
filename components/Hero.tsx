@@ -17,13 +17,17 @@ export default function Hero() {
         <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14">
           {/* Text */}
           <div className="order-1 text-center lg:text-right">
-            <span className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1.5 text-sm font-semibold text-primary">
-              עו״ד משה אמסלם · מקרקעין והתחדשות עירונית
-            </span>
-
-            <h1 className="heading-xl mt-6 text-ink">
-              ליווי משפטי <span className="text-primary">אישי</span>,
-              <br className="hidden sm:block" /> מהמשא ומתן ועד המפתח
+            {/* The pill is part of the <h1> on purpose: the heading then opens
+                with the name and the city people search for, while the large
+                line stays the tagline. Same two elements, same look. */}
+            <h1 className="text-ink">
+              <span className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1.5 text-sm font-semibold text-primary">
+                עורך דין משה אמסלם · תל אביב
+              </span>{" "}
+              <span className="heading-xl mt-6 block">
+                ליווי משפטי <span className="text-primary">אישי</span>,
+                <br className="hidden sm:block" /> מהמשא ומתן ועד המפתח
+              </span>
             </h1>
 
             <p className="text-body mx-auto mt-5 max-w-xl lg:mx-0">
@@ -93,7 +97,7 @@ export default function Hero() {
               />
               <Image
                 src="/moshe-cutout.png"
-                alt="עו״ד משה אמסלם"
+                alt="עורך דין משה אמסלם"
                 fill
                 className="object-cover object-top"
                 priority

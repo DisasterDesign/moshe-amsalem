@@ -2,6 +2,12 @@ import { siteConfig } from "@/config/site";
 
 const BASE = siteConfig.url.replace(/\/$/, "");
 
+/** The office serves clients across Israel from Tel Aviv. City first, so the local signal is explicit. */
+const AREA_SERVED = [
+  { "@type": "City", name: "תל אביב-יפו" },
+  { "@type": "Country", name: "Israel" },
+];
+
 function Script({ data }: { data: object }) {
   return (
     <script
@@ -20,7 +26,9 @@ export function OrganizationJsonLd({ areaNames }: { areaNames: string[] }) {
         "@type": "LegalService",
         "@id": `${BASE}/#legalservice`,
         name: siteConfig.legalName,
-        alternateName: siteConfig.name,
+        // The full "עורך דין" form is how people search; the site's own copy
+        // uses the abbreviation. Names only - no city or service keywords.
+        alternateName: [siteConfig.name, "עורך דין משה אמסלם", "משרד עורכי דין משה אמסלם"],
         url: BASE,
         image: `${BASE}/moshe-amsalem.jpeg`,
         logo: `${BASE}/sinbol.svg`,
@@ -31,6 +39,7 @@ export function OrganizationJsonLd({ areaNames }: { areaNames: string[] }) {
           "@type": "PostalAddress",
           streetAddress: siteConfig.address.street,
           addressLocality: siteConfig.address.city,
+          addressRegion: "מחוז תל אביב",
           postalCode: siteConfig.address.postalCode,
           addressCountry: siteConfig.address.country,
         },
@@ -47,10 +56,12 @@ export function OrganizationJsonLd({ areaNames }: { areaNames: string[] }) {
             closes: "18:00",
           },
         ],
-        areaServed: { "@type": "Country", name: "Israel" },
+        hasMap: siteConfig.googleProfileUrl,
+        areaServed: AREA_SERVED,
         knowsLanguage: ["he", "en"],
         sameAs: [siteConfig.social.facebook, siteConfig.social.instagram, siteConfig.googleProfileUrl],
         founder: { "@id": `${BASE}/#person` },
+        employee: { "@id": `${BASE}/#person` },
         hasOfferCatalog: {
           "@type": "OfferCatalog",
           name: "תחומי עיסוק",
@@ -64,6 +75,9 @@ export function OrganizationJsonLd({ areaNames }: { areaNames: string[] }) {
         "@type": "Person",
         "@id": `${BASE}/#person`,
         name: "משה אמסלם",
+        // Latin spelling and the "מושיקו" nickname wait for the client to confirm
+        // he uses them publicly.
+        alternateName: ["עו״ד משה אמסלם", "עורך דין משה אמסלם"],
         honorificPrefix: "עו״ד",
         jobTitle: "עורך דין",
         image: `${BASE}/moshe-amsalem.jpeg`,
@@ -81,6 +95,7 @@ export function OrganizationJsonLd({ areaNames }: { areaNames: string[] }) {
         "@id": `${BASE}/#website`,
         url: BASE,
         name: siteConfig.name,
+        alternateName: ["עורך דין משה אמסלם", siteConfig.legalName],
         inLanguage: "he-IL",
         publisher: { "@id": `${BASE}/#legalservice` },
       },
@@ -89,15 +104,20 @@ export function OrganizationJsonLd({ areaNames }: { areaNames: string[] }) {
   return <Script data={data} />;
 }
 
+/**
+ * Mirrors the visible trail in PageHero, which always opens with "בית". Google
+ * also needs at least two items, so a single-level page still qualifies.
+ */
 export function BreadcrumbsJsonLd({ items }: { items: { name: string; href: string }[] }) {
+  const trail = [{ name: "בית", href: "/" }, ...items];
   const data = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
-    itemListElement: items.map((c, i) => ({
+    itemListElement: trail.map((c, i) => ({
       "@type": "ListItem",
       position: i + 1,
       name: c.name,
-      item: c.href.startsWith("http") ? c.href : `${BASE}${c.href}`,
+      item: c.href.startsWith("http") ? c.href : c.href === "/" ? BASE : `${BASE}${c.href}`,
     })),
   };
   return <Script data={data} />;
@@ -134,7 +154,7 @@ export function ServiceJsonLd({
     serviceType: name,
     url: `${BASE}/services/${slug}`,
     provider: { "@id": `${BASE}/#legalservice` },
-    areaServed: { "@type": "Country", name: "Israel" },
+    areaServed: AREA_SERVED,
   };
   return <Script data={data} />;
 }
@@ -159,7 +179,7 @@ export function ArticleJsonLd({
     datePublished: date,
     dateModified: date,
     mainEntityOfPage: { "@type": "WebPage", "@id": `${BASE}/articles/${slug}` },
-    author: { "@id": `${BASE}/#person` },
+    author: { "@type": "Person", "@id": `${BASE}/#person`, name: "משה אמסלם", url: `${BASE}/about` },
     publisher: { "@id": `${BASE}/#legalservice` },
   };
   return <Script data={data} />;
