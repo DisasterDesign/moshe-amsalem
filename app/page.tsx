@@ -7,6 +7,7 @@ import FAQAccordion from "@/components/FAQAccordion";
 import GoogleReviews from "@/components/GoogleReviews";
 import Hero from "@/components/Hero";
 import HomeContact from "@/components/HomeContact";
+import InstagramReels from "@/components/InstagramReels";
 import Process from "@/components/Process";
 import Reveal from "@/components/Reveal";
 import SectionHeading from "@/components/SectionHeading";
@@ -49,6 +50,7 @@ export default function Home() {
       </section>
 
       <GoogleReviews />
+      <InstagramReels />
 
       {/* FAQ */}
       <section className="section-padding bg-cream">

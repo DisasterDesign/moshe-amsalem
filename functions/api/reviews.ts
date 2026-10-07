@@ -4,8 +4,8 @@
  * Live Google reviews for the office, proxied through a Cloudflare Pages Function
  * so the API key never reaches the browser.
  *
- * Refresh cadence: cached for 24h (daily) in the Cloudflare edge cache.
- * Pass ?refresh=1 to bypass the cache manually.
+ * Refresh cadence: cached for 24h (daily) in the Cloudflare edge cache. There is
+ * deliberately no public cache bypass: every miss is a billed Places API call.
  *
  * Required env (Cloudflare Pages → Settings → Environment variables):
  *   GOOGLE_PLACES_API_KEY  - Google Cloud API key with "Places API (New)" enabled
@@ -91,15 +91,12 @@ async function fetchPlaceByQuery(query, apiKey) {
 export async function onRequestGet(context) {
   const { request, env } = context;
   const url = new URL(request.url);
-  const bypassCache = url.searchParams.get("refresh") === "1";
 
   const cache = caches.default;
   const cacheKey = new Request(`${url.origin}/api/reviews`, { method: "GET" });
 
-  if (!bypassCache) {
-    const hit = await cache.match(cacheKey);
-    if (hit) return hit;
-  }
+  const hit = await cache.match(cacheKey);
+  if (hit) return hit;
 
   const apiKey = env.GOOGLE_PLACES_API_KEY;
   if (!apiKey) {

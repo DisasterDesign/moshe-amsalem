@@ -40,3 +40,10 @@ next-env.d.ts
 
 # local editor / claude settings
 /.claude/
+
+# local secrets / wrangler local state (may hold the Instagram token)
+.env
+.env.*
+!.env.example
+.dev.vars*
+/.wrangler/
