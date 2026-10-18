@@ -10,7 +10,7 @@ type Stat = {
   label: string;
 };
 
-/** Client-supplied figures appear immediately; Google values refresh live. */
+/** Client-supplied figures and the checked Google snapshot appear immediately. */
 export default function Counters() {
   const { rating, total } = useGoogleReviews();
   const stats: Stat[] = [

@@ -6,7 +6,7 @@ import GoogleGlyph from "./GoogleGlyph";
 import { useGoogleReviews } from "@/lib/reviews";
 
 /**
- * Floating Google rating badge that expands into the live reviews.
+ * Floating Google rating badge using the same checked snapshot as the carousel.
  * Sits above the WhatsApp button in the bottom-left stack.
  */
 export default function GoogleReviewsBadge() {

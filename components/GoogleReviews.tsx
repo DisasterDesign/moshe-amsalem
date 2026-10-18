@@ -8,10 +8,8 @@ import { WhatsappChatCard, whatsappTestimonials } from "./TestimonialsWhatsApp";
 import { useGoogleReviews } from "@/lib/reviews";
 
 /**
- * The single social-proof section of the site: live Google reviews carousel
- * plus one WhatsApp message card. Review data comes from `useGoogleReviews`,
- * which is shared with the floating badge so the page fetches once and falls
- * back to a bundled snapshot when the endpoint is unavailable.
+ * The site's manually checked Google reviews, with the most detailed first,
+ * plus one WhatsApp message card. The shared source also drives the counters.
  *
  * The remaining WhatsApp cards live on the About page, so the home page keeps
  * one header and one proof block instead of two competing sections.
@@ -91,7 +89,9 @@ export default function GoogleReviews() {
           {reviews.map((r) => (
             <article
               key={r.id}
-              className="flex w-[85%] flex-none snap-start flex-col rounded-2xl border border-line bg-white p-6 text-center shadow-sm sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]"
+              data-google-review-id={r.id}
+              aria-label={`ביקורת של ${r.author}, ${r.rating} מתוך 5`}
+              className="flex w-[85%] flex-none snap-start flex-col rounded-lg border border-line bg-white p-6 text-center sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]"
             >
               <Stars count={Math.round(r.rating)} />
 
@@ -124,9 +124,19 @@ export default function GoogleReviews() {
                   ) : (
                     <span className="block font-bold text-ink">{r.author}</span>
                   )}
-                  <span className="block text-xs text-ink-muted">{r.relativeTime}</span>
+                  {r.relativeTime && <span className="block text-xs text-ink-muted">{r.relativeTime}</span>}
                 </span>
               </div>
+
+              <a
+                href={r.reviewUri || r.authorUri || profileUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-4 text-sm font-medium text-primary underline-offset-4 hover:underline"
+                aria-label={`להמשך הביקורת של ${r.author} בגוגל`}
+              >
+                להמשך בגוגל
+              </a>
             </article>
           ))}
         </div>
