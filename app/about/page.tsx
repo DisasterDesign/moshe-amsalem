@@ -47,6 +47,21 @@ const credentials = [
 
 const PRINCIPLE_ICONS = [Scale, Award, BadgeCheck, ScrollText];
 
+const certificates = [
+  {
+    title: "תעודת חברות בלשכת עורכי הדין",
+    file: "/certificates/israel-bar-membership.pdf",
+    image: "/certificates/israel-bar-membership.webp",
+    alt: "תעודת קבלתו של משה אמסלם כחבר בלשכת עורכי הדין בישראל",
+  },
+  {
+    title: "הסמכה לעריכת ייפוי כוח מתמשך",
+    file: "/certificates/enduring-power-of-attorney.pdf",
+    image: "/certificates/enduring-power-of-attorney.webp",
+    alt: "תעודת ההסמכה של עורך דין משה אמסלם לעריכת ייפוי כוח מתמשך מטעם האפוטרופוס הכללי",
+  },
+];
+
 export default function AboutPage() {
   return (
     <>
@@ -91,18 +106,6 @@ export default function AboutPage() {
                   מתן תשומת לב לפרטים ומחויבות מלאה ללקוח.
                 </p>
               </div>
-
-              {/* Client-supplied personal story */}
-              <div className="mt-8 rounded-2xl border border-dashed border-gold bg-gold/10 p-5">
-                <h3 className="mb-2 font-heading font-bold text-ink">
-                  למה בחרתי במקרקעין
-                </h3>
-                <p className="text-sm leading-relaxed text-ink-soft">
-                  [סיפור אישי - לקבל ממשה. פסקה או שתיים בגוף ראשון: מה הביא אותך
-                  לתחום המקרקעין, ומה גורם לך להישאר בו. זה החלק שהכי מבדל אתר של
-                  עורך דין, ואי אפשר לכתוב אותו במקומך.]
-                </p>
-              </div>
             </Reveal>
           </div>
         </div>
@@ -134,13 +137,35 @@ export default function AboutPage() {
             ))}
           </div>
 
-          <Reveal className="mx-auto mt-8 max-w-3xl rounded-2xl border border-dashed border-gold bg-gold/10 p-5 text-center">
-            <p className="text-sm leading-relaxed text-ink-soft">
-              <span className="font-bold text-ink">תעודות מצולמות: </span>
-              [לקבל ממשה - סריקות של תעודת עורך דין, תעודת בוגר ותעודת ההסמכה לייפוי
-              כוח מתמשך. יוצגו כגלריה קטנה במקום הבלוק הזה.]
-            </p>
-          </Reveal>
+          <div className="mx-auto mt-10 grid max-w-3xl gap-6 sm:grid-cols-2">
+            {certificates.map((certificate) => (
+              <a
+                key={certificate.file}
+                href={certificate.file}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`${certificate.title} - פתיחת PDF בלשונית חדשה`}
+                className="group overflow-hidden rounded-2xl border border-line bg-white shadow-sm transition-colors hover:border-primary/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
+              >
+                <div className="aspect-[210/297] bg-white p-3">
+                  <Image
+                    src={certificate.image}
+                    alt={certificate.alt}
+                    width={991}
+                    height={1400}
+                    sizes="(max-width: 639px) calc(100vw - 48px), 372px"
+                    className="h-full w-full object-contain"
+                  />
+                </div>
+                <div className="border-t border-line p-4 text-center">
+                  <h3 className="font-heading font-bold text-ink">{certificate.title}</h3>
+                  <p className="mt-1 text-sm text-primary group-hover:underline">
+                    לצפייה בתעודה המלאה (PDF)
+                  </p>
+                </div>
+              </a>
+            ))}
+          </div>
         </div>
       </section>
 
