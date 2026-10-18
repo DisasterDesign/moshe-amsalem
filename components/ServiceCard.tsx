@@ -19,19 +19,12 @@ export default function ServiceCard({
   return (
     <Reveal as="div" index={index} className="h-full">
     <article
-      className="group relative flex h-full flex-col rounded-2xl border border-line bg-white p-6 shadow-sm
-                 transition-all duration-300 ease-out hover:-translate-y-1.5 hover:border-primary/40
-                 hover:shadow-xl hover:shadow-primary/10 focus-within:border-primary/40"
+      className="group relative flex h-full flex-col rounded-lg border border-line bg-white p-6
+                 transition-colors duration-200 hover:border-primary/50 focus-within:border-primary"
     >
-      <div
-        className="mb-5 flex h-14 w-14 items-center justify-center rounded-xl bg-primary/10
-                   transition-all duration-300 ease-out group-hover:scale-105 group-hover:bg-primary"
-        aria-hidden="true"
-      >
-        <Icon className="h-7 w-7 text-primary transition-colors duration-300 group-hover:text-white" />
-      </div>
+      <Icon className="mb-5 h-7 w-7 text-primary" aria-hidden="true" />
 
-      <h3 className="mb-3 font-heading text-xl font-bold text-ink transition-colors duration-300 group-hover:text-primary">
+      <h3 className="mb-3 font-heading text-xl font-bold text-ink group-hover:underline group-hover:decoration-primary/50 group-hover:underline-offset-4">
         <Link href={`/services/${slug}`}>
           {title}
           <span className="absolute inset-0" aria-hidden="true" />

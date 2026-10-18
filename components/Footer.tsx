@@ -10,7 +10,6 @@ const quickLinks = [
   { href: "/about", label: "אודות" },
   { href: "/services", label: "תחומי עיסוק" },
   { href: "/articles", label: "מאמרים" },
-  { href: "/projects", label: "פרויקטים" },
   { href: "/contact", label: "צור קשר" },
 ];
 

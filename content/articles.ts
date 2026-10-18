@@ -6,7 +6,7 @@ import type { Article } from "./types";
  * Deliberately free of tax rates, thresholds and statutory deadlines - those
  * change, and a stale figure on a lawyer's site is worse than no figure.
  */
-export const articles: Article[] = [
+const allArticles: Article[] = [
   {
     slug: "buying-second-hand-apartment",
     image: "/articles/buying-second-hand-apartment.jpg",
@@ -41,6 +41,7 @@ export const articles: Article[] = [
   },
   {
     slug: "purchase-tax-guide",
+    draft: true,
     image: "/articles/purchase-tax-guide.jpg",
     title: "מס רכישה",
     category: "מיסוי מקרקעין",
@@ -78,6 +79,7 @@ export const articles: Article[] = [
   },
   {
     slug: "buying-from-developer",
+    draft: true,
     image: "/articles/buying-from-developer.jpg",
     title: "קניית דירה מקבלן",
     category: "מקרקעין",
@@ -202,6 +204,8 @@ export const articles: Article[] = [
     ],
   },
 ];
+
+export const articles = allArticles.filter((article) => !article.draft);
 
 export function getArticle(slug: string) {
   return articles.find((a) => a.slug === slug);

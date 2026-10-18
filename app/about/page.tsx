@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Award, BadgeCheck, GraduationCap, MapPin, Navigation, Scale, ScrollText } from "lucide-react";
+import { BadgeCheck, GraduationCap, MapPin, Navigation, Scale, ScrollText } from "lucide-react";
 import CTASection from "@/components/CTASection";
 import HomeContact from "@/components/HomeContact";
 import MidPageCta from "@/components/MidPageCta";
@@ -45,8 +45,6 @@ const credentials = [
   },
 ];
 
-const PRINCIPLE_ICONS = [Scale, Award, BadgeCheck, ScrollText];
-
 const certificates = [
   {
     title: "תעודת חברות בלשכת עורכי הדין",
@@ -76,7 +74,7 @@ export default function AboutPage() {
       <section className="section-padding bg-cream">
         <div className="container-custom">
           <div className="grid items-center gap-12 lg:grid-cols-2">
-            <Reveal className="overflow-hidden rounded-2xl border border-line shadow-lg shadow-primary/5">
+            <Reveal className="overflow-hidden rounded-lg border border-line">
               <Image
                 src="/moshe-amsalem.jpeg"
                 alt="דיוקן של עורך דין משה אמסלם"
@@ -89,7 +87,7 @@ export default function AboutPage() {
 
             <Reveal index={1}>
               <h2 className="heading-lg mb-6 text-ink">
-                עו״ד <span className="text-primary">משה אמסלם</span>
+                עו״ד משה אמסלם
               </h2>
               <div className="space-y-4 text-lg leading-relaxed text-ink-soft">
                 <p>
@@ -121,10 +119,10 @@ export default function AboutPage() {
               <Reveal
                 key={c.title}
                 index={i}
-                className="flex items-start gap-4 rounded-2xl border border-line bg-white p-6 shadow-sm"
+                className="flex items-start gap-4 border-b border-line py-6"
               >
                 <span
-                  className="flex h-12 w-12 flex-none items-center justify-center rounded-xl bg-primary/10"
+                  className="mt-0.5 flex-none"
                   aria-hidden="true"
                 >
                   <c.icon className="h-6 w-6 text-primary" />
@@ -145,7 +143,7 @@ export default function AboutPage() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={`${certificate.title} - פתיחת PDF בלשונית חדשה`}
-                className="group overflow-hidden rounded-2xl border border-line bg-white shadow-sm transition-colors hover:border-primary/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
+                className="group overflow-hidden rounded-lg border border-line bg-white transition-colors hover:border-primary/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
               >
                 <div className="aspect-[210/297] bg-white p-3">
                   <Image
@@ -184,27 +182,16 @@ export default function AboutPage() {
             </Reveal>
 
             <div className="grid gap-4 sm:grid-cols-2">
-              {aboutPrinciples.map((value, index) => {
-                const Icon = PRINCIPLE_ICONS[index % PRINCIPLE_ICONS.length];
-                return (
-                  <Reveal
-                    key={value.title}
-                    index={index}
-                    className="rounded-2xl border border-line bg-white p-6 text-center shadow-sm
-                               transition-all duration-300 ease-out hover:-translate-y-1.5
-                               hover:border-primary/40 hover:shadow-xl hover:shadow-primary/10"
-                  >
-                    <span
-                      className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-xl bg-primary/10"
-                      aria-hidden="true"
-                    >
-                      <Icon className="h-7 w-7 text-primary" />
-                    </span>
-                    <h3 className="mb-2 font-heading text-lg font-bold text-ink">{value.title}</h3>
-                    <p className="text-sm text-ink-soft">{value.description}</p>
-                  </Reveal>
-                );
-              })}
+              {aboutPrinciples.map((value, index) => (
+                <Reveal
+                  key={value.title}
+                  index={index}
+                  className="border-t border-line pt-5 text-right"
+                >
+                  <h3 className="mb-2 font-heading text-lg font-bold text-ink">{value.title}</h3>
+                  <p className="text-sm text-ink-soft">{value.description}</p>
+                </Reveal>
+              ))}
             </div>
           </div>
         </div>
@@ -226,7 +213,7 @@ export default function AboutPage() {
           <SectionHeading title="מיקום" highlight="המשרד" />
 
           <div className="grid items-center gap-8 lg:grid-cols-2">
-            <Reveal className="aspect-video overflow-hidden rounded-2xl border border-line">
+            <Reveal className="aspect-video overflow-hidden rounded-lg border border-line">
               <iframe
                 src={mapsEmbedUrl}
                 width="100%"
@@ -242,7 +229,7 @@ export default function AboutPage() {
             <Reveal index={1} className="text-center lg:text-right">
               <div className="mb-6 flex items-start justify-center gap-4 lg:justify-start">
                 <span
-                  className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-primary/10"
+                  className="mt-1 flex-shrink-0"
                   aria-hidden="true"
                 >
                   <MapPin className="h-6 w-6 text-primary" />
@@ -262,7 +249,7 @@ export default function AboutPage() {
                   href={wazeUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex w-full items-center justify-center gap-3 rounded-lg bg-[#33CCFF] px-8 py-4 text-lg font-bold text-dark transition-all duration-300 hover:scale-105 hover:bg-[#28b8e8] hover:shadow-lg sm:w-auto"
+                  className="inline-flex w-full items-center justify-center gap-3 rounded-md bg-[#33CCFF] px-8 py-4 text-lg font-bold text-dark transition-colors duration-200 hover:bg-[#28b8e8] sm:w-auto"
                 >
                   <Navigation className="h-6 w-6" aria-hidden="true" />
                   נווטו עם Waze

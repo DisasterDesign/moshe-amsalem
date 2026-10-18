@@ -23,6 +23,8 @@ export type ArticleBlock =
 
 export type Article = {
   slug: string;
+  /** Drafts stay out of routes, cards, related articles and the sitemap. */
+  draft?: boolean;
   title: string;
   category: string;
   excerpt: string;

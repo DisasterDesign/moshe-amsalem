@@ -65,7 +65,7 @@ export function WhatsappChatCard({ t }: { t: WhatsappTestimonial }) {
   return (
     <div
       className="relative w-[300px] flex-none snap-center overflow-hidden rounded-2xl border border-line bg-white shadow-md"
-      onMouseEnter={() => setShowReal(true)}
+      onMouseEnter={() => setShowReal(Boolean(t.realSrc))}
       onMouseLeave={() => setShowReal(false)}
       dir="rtl"
     >
@@ -99,14 +99,14 @@ export function WhatsappChatCard({ t }: { t: WhatsappTestimonial }) {
           ))}
         </div>
 
-        {/* Reveal overlay: real original screenshot (or placeholder) */}
-        <div
-          className={`absolute inset-0 flex flex-col items-center justify-center gap-2 bg-white/95 p-4 text-center transition-opacity duration-300 ${
-            showReal ? "opacity-100" : "pointer-events-none opacity-0"
-          }`}
-        >
-          {t.realSrc ? (
-            // eslint-disable-next-line @next/next/no-img-element
+        {/* Only offer the original when a real screenshot is available. */}
+        {t.realSrc && (
+          <div
+            className={`absolute inset-0 flex flex-col items-center justify-center gap-2 bg-white/95 p-4 text-center transition-opacity duration-300 ${
+              showReal ? "opacity-100" : "pointer-events-none opacity-0"
+            }`}
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={t.realSrc}
               alt={`צילום מסך של הודעת תודה מ${t.name}`}
@@ -114,26 +114,22 @@ export function WhatsappChatCard({ t }: { t: WhatsappTestimonial }) {
               decoding="async"
               className="max-h-full max-w-full rounded-lg border border-line object-contain"
             />
-          ) : (
-            <>
-              <Camera className="h-8 w-8 text-primary" />
-              <p className="text-xs font-medium text-ink">צילום השיחה המקורי</p>
-              <p className="text-[11px] text-ink-muted">יתווסף לאחר אישור הלקוח</p>
-            </>
-          )}
-        </div>
+          </div>
+        )}
       </div>
 
       {/* Reveal toggle (touch / keyboard) */}
-      <button
-        type="button"
-        onClick={() => setShowReal((v) => !v)}
-        className="flex w-full items-center justify-center gap-1.5 border-t border-line py-2 text-xs font-medium text-primary transition-colors hover:bg-primary/5"
-        aria-pressed={showReal}
-      >
-        <Camera size={13} />
-        {showReal ? "חזרה להודעה" : "הצגת הצילום המקורי"}
-      </button>
+      {t.realSrc && (
+        <button
+          type="button"
+          onClick={() => setShowReal((v) => !v)}
+          className="flex w-full items-center justify-center gap-1.5 border-t border-line py-2 text-xs font-medium text-primary transition-colors hover:bg-primary/5"
+          aria-pressed={showReal}
+        >
+          <Camera size={13} />
+          {showReal ? "חזרה להודעה" : "הצגת הצילום המקורי"}
+        </button>
+      )}
     </div>
   );
 }

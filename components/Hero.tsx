@@ -6,27 +6,17 @@ import { heroBenefits } from "@/content/home";
 
 export default function Hero() {
   return (
-    <section className="relative overflow-hidden bg-cream">
-      {/* soft accent shapes */}
-      <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-        <div className="absolute -top-24 right-1/4 h-96 w-96 rounded-full bg-primary/5 blur-3xl" />
-        <div className="absolute bottom-0 left-0 h-72 w-72 rounded-full bg-gold/5 blur-3xl" />
-      </div>
-
-      <div className="container-custom relative pb-14 pt-12 md:pb-20 md:pt-16">
+    <section className="bg-cream">
+      <div className="container-custom pb-14 pt-12">
         <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14">
           {/* Text */}
           <div className="order-1 text-center lg:text-right">
-            {/* The pill is part of the <h1> on purpose: the heading then opens
-                with the name and the city people search for, while the large
-                line stays the tagline. Same two elements, same look. */}
             <h1 className="text-ink">
-              <span className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1.5 text-sm font-semibold text-primary">
+              <span className="block text-base font-semibold text-primary">
                 עורך דין משה אמסלם · תל אביב
               </span>{" "}
-              <span className="heading-xl mt-6 block">
-                ליווי משפטי <span className="text-primary">אישי</span>,
-                <br className="hidden sm:block" /> מהמשא ומתן ועד המפתח
+              <span className="mt-5 block font-heading text-4xl font-bold leading-[1.2] md:text-5xl md:leading-[1.2]">
+                ליווי משפטי אישי, מהמשא ומתן ועד המפתח
               </span>
             </h1>
 
@@ -40,10 +30,10 @@ export default function Hero() {
               {heroBenefits.map((benefit) => (
                 <li key={benefit} className="flex items-start gap-3">
                   <span
-                    className="mt-0.5 flex h-6 w-6 flex-none items-center justify-center rounded-full bg-gold/15"
+                    className="mt-1 flex-none text-primary"
                     aria-hidden="true"
                   >
-                    <Check className="h-4 w-4 text-gold" strokeWidth={3} />
+                    <Check className="h-4 w-4" strokeWidth={2} />
                   </span>
                   <span className="text-ink-soft">{benefit}</span>
                 </li>
@@ -67,11 +57,7 @@ export default function Hero() {
 
             {/* trust strip */}
             <div className="mt-8 flex items-center justify-center gap-3 text-ink-soft lg:justify-start">
-              <span className="flex text-gold" aria-hidden="true">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} size={18} className="fill-current" />
-                ))}
-              </span>
+              <Star size={18} className="flex-none fill-gold text-gold" aria-hidden="true" />
               <span className="text-sm font-medium">
                 דירוג 5.0 בגוגל · ליווי אישי מקצה לקצה
               </span>
@@ -79,22 +65,8 @@ export default function Hero() {
           </div>
 
           {/* Portrait */}
-          <div className="relative order-2 mx-auto w-full max-w-sm sm:max-w-md lg:max-w-none">
-            <div
-              className="absolute -bottom-5 -left-5 hidden h-28 w-28 rounded-3xl border-2 border-gold/40 sm:block"
-              aria-hidden="true"
-            />
-            <div
-              className="relative aspect-[4/5] overflow-hidden rounded-[2.2rem] shadow-2xl shadow-dark/25"
-              style={{
-                background:
-                  "radial-gradient(120% 85% at 50% 0%, #2A6072 0%, #1B3E4E 48%, #153243 100%)",
-              }}
-            >
-              <div
-                className="absolute inset-x-10 top-6 h-40 rounded-full bg-white/10 blur-2xl"
-                aria-hidden="true"
-              />
+          <div className="order-2 mx-auto w-full max-w-sm sm:max-w-md lg:max-w-none">
+            <div className="relative aspect-[4/5] overflow-hidden rounded-lg bg-dark-secondary">
               <Image
                 src="/moshe-cutout.png"
                 alt="עורך דין משה אמסלם"

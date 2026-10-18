@@ -3,6 +3,7 @@ import { ArrowLeft } from "lucide-react";
 import Reveal from "./Reveal";
 import SectionHeading from "./SectionHeading";
 import { dealTimeline } from "@/content/home";
+import { getArticle } from "@/content/articles";
 
 /** The one stage that genuinely justifies a callout - a document people sign
  *  unadvised that can already bind them. Every other risk reads as a quiet
@@ -75,7 +76,7 @@ export default function Timeline() {
                     </p>
                   )}
 
-                  {stage.article && (
+                  {stage.article && getArticle(stage.article) && (
                     <Link
                       href={`/articles/${stage.article}`}
                       className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:underline"

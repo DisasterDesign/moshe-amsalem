@@ -1,9 +1,6 @@
 /**
- * Single source of truth for tenant-level facts: brand, contact, nav, and the
- * numbers that are still waiting on the client.
- *
- * Anything the client still owes us lives in `PENDING` below, so filling in the
- * real values is a one-file edit rather than a hunt across the codebase.
+ * Single source of truth for published office facts and contact details.
+ * Outstanding client materials are tracked in DECISIONS.md, outside the UI.
  */
 
 export const siteConfig = {
@@ -43,25 +40,11 @@ export const siteConfig = {
   googleProfileUrl: "https://maps.google.com/?cid=18236033290523899057",
 } as const;
 
-/**
- * Placeholders the client still has to supply. Rendered visibly on the site as
- * `[... - לקבל ממשה]` so nothing fake ever ships, per the brief.
- */
 export const STATS = {
   /** Supplied by the client, August 2026. */
   dealsClosed: 60,
   dealsValueMillions: 100,
 } as const;
-
-export const PENDING = {
-  yearsExperience: "[מספר - לקבל ממשה]",
-  accessibilityCoordinator: "[שם ופרטי רכז נגישות - לקבל ממשה]",
-  privacyEmail: "[דוא״ל לפניות פרטיות - לקבל ממשה]",
-} as const;
-
-export function isPending(value: string) {
-  return value.trim().startsWith("[");
-}
 
 export function waLink(message: string) {
   return `https://wa.me/${siteConfig.whatsappNumber}?text=${encodeURIComponent(message)}`;

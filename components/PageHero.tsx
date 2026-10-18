@@ -44,7 +44,7 @@ export default function PageHero({
 
         <h1 className="heading-xl text-white">
           {title}
-          {highlight && <span className="text-gold"> {highlight}</span>}
+          {highlight && <> {highlight}</>}
         </h1>
 
         {subtitle && (

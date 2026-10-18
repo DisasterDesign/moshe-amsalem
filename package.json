@@ -5,8 +5,10 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "postbuild": "npm run check:production",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "check:production": "node scripts/check-production-content.mjs"
   },
   "dependencies": {
     "@marsidev/react-turnstile": "^1.5.0",

@@ -18,7 +18,6 @@ export const navLinks: NavLink[] = [
     })),
   },
   { href: "/articles", label: "מאמרים" },
-  { href: "/projects", label: "פרויקטים" },
   { href: "/contact", label: "צור קשר" },
 ];
 

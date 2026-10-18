@@ -29,37 +29,28 @@
 
 @layer components {
   .btn-primary {
-    @apply bg-primary text-white font-semibold px-6 py-3 rounded-lg
-           transition-all duration-300 ease-out
-           hover:bg-primary-dark hover:shadow-lg hover:shadow-primary/25
-           hover:-translate-y-0.5
-           active:translate-y-0 active:scale-[0.98]
-           focus:outline-none focus:ring-2 focus:ring-primary/40 focus:ring-offset-2 focus:ring-offset-cream;
+    @apply bg-primary text-white font-semibold px-6 py-3 rounded-md
+           transition-colors duration-200 hover:bg-primary-dark
+           focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-cream;
   }
 
   .btn-outline {
-    @apply border-2 border-primary text-primary font-semibold px-6 py-3 rounded-lg
-           transition-all duration-300 ease-out
-           hover:bg-primary hover:text-white hover:-translate-y-0.5
-           active:translate-y-0 active:scale-[0.98]
-           focus:outline-none focus:ring-2 focus:ring-primary/40 focus:ring-offset-2 focus:ring-offset-cream;
+    @apply border border-primary text-primary font-semibold px-6 py-3 rounded-md
+           transition-colors duration-200 hover:bg-primary hover:text-white
+           focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-cream;
   }
 
   .btn-gold {
-    @apply bg-gold text-dark font-semibold px-6 py-3 rounded-lg
-           transition-all duration-300 ease-out
-           hover:bg-gold-light hover:-translate-y-0.5 hover:shadow-lg hover:shadow-gold/25
-           active:translate-y-0 active:scale-[0.98]
-           focus:outline-none focus:ring-2 focus:ring-gold/50 focus:ring-offset-2;
+    @apply bg-gold text-dark font-semibold px-6 py-3 rounded-md
+           transition-colors duration-200 hover:bg-gold-light
+           focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2;
   }
 
   .btn-whatsapp {
-    @apply bg-whatsapp text-whatsapp-ink font-semibold px-6 py-3 rounded-lg
+    @apply bg-whatsapp text-whatsapp-ink font-semibold px-6 py-3 rounded-md
            inline-flex items-center justify-center gap-2
-           transition-all duration-300 ease-out
-           hover:bg-whatsapp-dark hover:text-white hover:-translate-y-0.5
-           active:translate-y-0 active:scale-[0.98]
-           focus:outline-none focus:ring-2 focus:ring-whatsapp/50 focus:ring-offset-2 focus:ring-offset-cream;
+           transition-colors duration-200 hover:bg-whatsapp-dark
+           focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-cream;
   }
 
   .section-padding {
@@ -140,17 +131,6 @@
     white-space: nowrap;
     opacity: 0;
     pointer-events: none;
-  }
-
-  /* Marks a value the client still owes us. Visible but clearly provisional.
-     inline-block so the padding grows a real line box instead of painting over
-     the neighbouring lines. */
-  .pending-value {
-    @apply inline-block rounded-md border border-dashed border-gold/70 bg-gold/10
-           px-2 py-0.5 text-base font-medium leading-snug text-ink;
-  }
-  .bg-dark .pending-value {
-    @apply text-light-secondary;
   }
 }
 
